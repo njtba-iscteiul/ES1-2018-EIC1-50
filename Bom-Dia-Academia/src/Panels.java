@@ -13,6 +13,9 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JMenuBar;
@@ -74,15 +77,19 @@ public class Panels {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				JOptionPane loginJOptionPane = new JOptionPane();
-				loginJOptionPane.showMessageDialog(null, "Sucessful login!", "Login", 1);
-				loginPanel.hide();
+				boolean login = Xml.login(username.getText(), password.getText());
 				
-				frame.setSize(625, 500);
-				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-				frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2);
-				
-				startPanel();
+				if(login == true) {
+					JOptionPane loginJOptionPane = new JOptionPane();
+					loginJOptionPane.showMessageDialog(null, "Sucessful login!", "Login", 1);
+					loginPanel.hide();
+					
+					frame.setSize(625, 500);
+					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+					frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2);
+					
+					startPanel();
+				}
 			}
 		});
 		
@@ -111,6 +118,9 @@ public class Panels {
 		loginPanel.add(register);		
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	private void registerPanel() {
 		
 		JPanel registerPanel = new JPanel();
@@ -177,14 +187,41 @@ public class Panels {
 		twitterPassword.setBounds(156, 380, 167, 22);
 		
 		JButton register = new JButton("Register");
-		register.setBounds(133, 427, 95, 40);
+		register.setBounds(67, 427, 95, 40);
 		
 		register.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+							
+				boolean confirmData = Xml.confirmData(email.getText(), username.getText(), password.getText(), 
+						confirmPassword.getText(), emailPassword.getText(), facebookPassword.getText(), twitterPassword.getText());
+				
+				if(confirmData == true) {
+					
+					Xml.addRegister(email.getText(), username.getText(), password.getText());
+					
+					JOptionPane.showMessageDialog(null, "Complete register!", "Register", 1);
+					
+					registerPanel.hide();
+					
+					frame.setSize(375, 265);
+					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+					frame.setLocation(dim.width/2 - frame.getWidth()/2, dim.height/2 - frame.getHeight()/2);
+					
+					loginPanel();
+				}
+			}
+		});
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(195, 427, 95, 40);
+		
+		btnCancel.addActionListener(new ActionListener() {
 			
-				JOptionPane.showMessageDialog(null, "Complete register!", "Register", 1);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
 				registerPanel.hide();
 				
 				frame.setSize(375, 265);
@@ -214,6 +251,7 @@ public class Panels {
 		registerPanel.add(twitterPasswordLabel);
 		registerPanel.add(twitterPassword);
 		registerPanel.add(register);		
+		registerPanel.add(btnCancel);
 	}
 	
 	private JMenuBar getMenuBar(JPanel atualPanel) {
@@ -602,9 +640,6 @@ public class Panels {
 		twitterPanel.add(btnOk);
 	}
 	
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	private void xmlPanel() {
 		
 		JPanel xmlPanel = new JPanel();
@@ -646,6 +681,16 @@ public class Panels {
 		JButton btnSave = new JButton("Save");
 		btnSave.setBounds(480, 133, 95, 40);
 		btnSave.hide();
+		
+		btnSave.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				Xml.saveFile(textArea);
+				
+			}
+		});
 
 		JButton btnShowFile = new JButton("Show file");
 		btnShowFile.setBounds(480, 54, 95, 40);
@@ -654,6 +699,8 @@ public class Panels {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				Xml.readFile(textArea);
 				
 				btnShowFile.hide();
 				btnEdit.show();
