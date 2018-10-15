@@ -1,23 +1,16 @@
-import java.awt.Dimension;
-import java.awt.Toolkit;
+package xml;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,11 +20,8 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.sax.SAXTransformerFactory;
-import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,6 +32,7 @@ public class Xml {
 
 	private static File f;
 	private static Document document;
+	private final static String PASSWORD = "admin";
 	
 	public static void addRegister(String emailText, String usernameText, String passwordText) {
 		
@@ -74,95 +65,9 @@ public class Xml {
 		user.appendChild(password);
 		users.appendChild(user);
 		
-		writeFile(document);		
-	}
-	
-	public static boolean login(String usernameText, String passwordText) {
+		writeFile(document);
 		
-		createFile();
-		
-		createDocument();
- 		
-		NodeList userList = document.getElementsByTagName("User");
-		
-		if(userList.getLength() == 0) {
-			JOptionPane.showMessageDialog(null, "No users", "Login", 1);
-		}
-		else {
-			for (int i = 0; i < userList.getLength(); i++) {
-				
-				NodeList usernameList = document.getElementsByTagName("Username");
-				
-				if(usernameList.item(i).getTextContent().equals(usernameText)) {
-					
-					NodeList passwordList = document.getElementsByTagName("Password");
-					
-					if(passwordList.item(i).getTextContent().equals(passwordText)) {
-						return true;
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "Password incorrect", "Login", 1);
-						break;
-					}
-				}
-				else {
-					if(i == userList.getLength() - 1)
-						JOptionPane.showMessageDialog(null, "User doesn´t exist", "Login", 1);
-				}
-			}
-		}
-		
-		return false;
-	}
-	
-	public static boolean confirmData(String email, String username, String password, String confirmPassword, 
-			String emailPassword, String facebookPassword, String twitterPassword) {
-		
-		String email_regex = "^[\\w-\\+]+(\\.[\\w]+)*@iscte-iul.pt";
-		
-		Pattern pattern = Pattern.compile(email_regex, Pattern.CASE_INSENSITIVE);
-		
-		Matcher matcher = pattern.matcher(email);
-		
-		if(email.equals("") || matcher.matches() == false) {
-			JOptionPane.showMessageDialog(null, "Email incorrect or missing", "Email", 1);
-		}
-		else {
-			
-			if(username.equals("")) {
-				JOptionPane.showMessageDialog(null, "Username missing", "Username", 1);
-			}
-			else {
-				if(password.equals("")) {
-					JOptionPane.showMessageDialog(null, "Password missing", "Password", 1);
-				}
-				else {
-					if(confirmPassword.equals("") || !confirmPassword.equals(password)) {
-						JOptionPane.showMessageDialog(null, "Confirm password missing or not equal a password", "Password", 1);
-					}
-					else {
-						if(emailPassword.equals("")) {
-							JOptionPane.showMessageDialog(null, "Email password missing", "Password", 1);
-						}
-						else {
-							if(facebookPassword.equals("")) {
-								JOptionPane.showMessageDialog(null, "Facebook password missing", "Password", 1);
-							}
-							else {
-								if(twitterPassword.equals("")) {
-									JOptionPane.showMessageDialog(null, "Twitter password missing", "Password", 1);
-								}
-								else {
-									return true;
-								}
-							}
-						}
-					}							
-				}
-			}		
-		}
-		
-		return false;
+		JOptionPane.showMessageDialog(null, "Complete register!", "Register", 1);
 	}
 	
 	public static void createFile() {
@@ -178,7 +83,7 @@ public class Xml {
 		}
 	}
 	
-	private static void createDocument() {
+	public static Document createDocument() {
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		 
@@ -198,6 +103,8 @@ public class Xml {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return document;
 	}
 	
 	private static void writeFile(Document document) {
@@ -260,8 +167,6 @@ public class Xml {
 
 	public static void saveFile(JTextArea textArea) {
 		
-		String path;
-		String filename;
 		String xmlText = textArea.getText();
 
 		JFileChooser fileChooser = new JFileChooser(new File(f.getAbsolutePath()));
@@ -279,5 +184,23 @@ public class Xml {
 		    	e.printStackTrace();
 		    }
 		}
+	}
+	
+	public static void checkPassword(JPanel atualPanel) {
+			
+		JPasswordField pwd = new JPasswordField(10);
+		
+		while(!pwd.getText().equals(PASSWORD)) {
+				
+			int option = JOptionPane.showConfirmDialog(null, pwd, "Enter password", 2);
+			
+			if(option == JOptionPane.CANCEL_OPTION) {
+				atualPanel.show();
+				break;
+			}
+			
+			if(!pwd.getText().equals(PASSWORD))
+				JOptionPane.showMessageDialog(null, "Password incorrect", "Alert", 2);
+		}	
 	}
 }
