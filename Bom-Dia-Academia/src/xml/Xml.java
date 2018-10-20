@@ -39,16 +39,20 @@ public class Xml {
 		createFile();
 		
 		createDocument();
+		
+		NodeList listProject = document.getElementsByTagName("Project");
+		Node projectNode = listProject.item(0);
+		Element project = (Element) projectNode;
 	 		
-		NodeList list = document.getElementsByTagName("Users");
+		NodeList listUsers = document.getElementsByTagName("Users");
 		Element users = null;
 
-		if(list.getLength() == 0) {
+		if(listUsers.getLength() == 0) {
 			users = document.createElement("Users");
-			document.appendChild(users);
+			project.appendChild(users);
 		}
 		else {
-			Node node = list.item(0);
+			Node node = listUsers.item(0);
 			users = (Element) node;
 		}
 
@@ -70,6 +74,33 @@ public class Xml {
 		JOptionPane.showMessageDialog(null, "Complete register!", "Register", 1);
 	}
 	
+	private static void addFilters() {
+		
+		Element project = document.createElement("Project");
+		
+		document.appendChild(project);
+		
+		Element filters = document.createElement("Filters");
+		
+		project.appendChild(filters);
+		
+		Element allFilter = document.createElement("Filter");
+		allFilter.appendChild(document.createTextNode("All"));
+		Element emailFilter = document.createElement("Filter");
+		emailFilter.appendChild(document.createTextNode("Email"));
+		Element facebookFilter = document.createElement("Filter");
+		facebookFilter.appendChild(document.createTextNode("Facebook"));
+		Element twitterFilter = document.createElement("Filter");
+		twitterFilter.appendChild(document.createTextNode("Twitter"));
+
+		filters.appendChild(allFilter);
+		filters.appendChild(emailFilter);
+		filters.appendChild(facebookFilter);
+		filters.appendChild(twitterFilter);
+		
+		writeFile(document);
+	}
+	
 	public static void createFile() {
 		
 		f = new File("./config.xml");
@@ -77,6 +108,8 @@ public class Xml {
 		if(!f.exists()) {
 			try {
 				f.createNewFile();
+				createDocument();
+				addFilters();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}	
@@ -202,5 +235,23 @@ public class Xml {
 			if(!pwd.getText().equals(PASSWORD))
 				JOptionPane.showMessageDialog(null, "Password incorrect", "Alert", 2);
 		}	
+	}
+	
+	public static String[] getFilters() {
+		
+		createFile();
+		
+		createDocument();
+		
+		NodeList filter = document.getElementsByTagName("Filter");
+		
+		String[] filters = new String[filter.getLength()];
+		
+		for (int i = 0; i < filter.getLength(); i++) {
+			Node node = filter.item(i);
+			filters[i] = node.getTextContent();
+		}
+		
+		return filters;
 	}
 }

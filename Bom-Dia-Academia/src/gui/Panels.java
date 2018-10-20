@@ -12,6 +12,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
@@ -19,11 +21,20 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JComboBox;
+import javax.mail.MessagingException;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.text.TableView.TableCell;
 
+import functionalities.Email;
+import functionalities.Facebook;
 import functionalities.Login;
 import functionalities.Register;
+import functionalities.Twitter;
+import table.ButtonEditor;
+import table.ButtonRenderer;
 import xml.Xml;
 
 import javax.swing.JTable;
@@ -307,7 +318,7 @@ public class Panels {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				atualPanel.hide();
-				emailPanel();
+				emailPanel("","","");
 			}
 		});
 
@@ -316,7 +327,7 @@ public class Panels {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				atualPanel.hide();
-				facebookPanel();
+				facebookPanel("");
 			}
 		});
 
@@ -325,7 +336,7 @@ public class Panels {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				atualPanel.hide();
-				twitterPanel();
+				twitterPanel("");
 			}
 		});
 
@@ -428,15 +439,14 @@ public class Panels {
 		filterLabel.setBounds(10, 35, 46, 14);
 
 		JComboBox filterComboBox = new JComboBox();
-		filterComboBox.setModel(new DefaultComboBoxModel(new String[] { "All", "Email", "Facebook", "Twitter" }));
+		filterComboBox.setModel(new DefaultComboBoxModel(Xml.getFilters()));
 		filterComboBox.setBounds(66, 32, 95, 22);
 
 		JLabel searchLabel = new JLabel("Search by:");
 		searchLabel.setBounds(171, 35, 72, 14);
 
 		JComboBox searchComboBox = new JComboBox();
-		searchComboBox
-				.setModel(new DefaultComboBoxModel(new String[] { "All time", "Last hour", "Last day", "Last week" }));
+		searchComboBox.setModel(new DefaultComboBoxModel(new String[] { "All time", "Last hour", "Last day", "Last week" }));
 		searchComboBox.setBounds(253, 32, 95, 20);
 
 		JTextField searchText = new JTextField();
@@ -450,14 +460,51 @@ public class Panels {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(10, 65, 588, 387);
 
+		Email e = new Email();
+		Facebook f = new Facebook();
+		Twitter t = new Twitter();
+		
 		String[] columnNames = { "Data", "Source", "Sender", "Subject", "Content", "View" };
 
-		Object[][] data = {};
-
-		JTable table = new JTable(data, columnNames);
+		List<String[]> values = new ArrayList<String[]>();
+		
+		e.receiveEmail("njtba@iscte-iul.pt", "WolfSonbra6799", values);
+		f.viewPosts(values);
+		t.viewTweets(values);
+		
+		TableModel tableModel = null;
+		tableModel = new DefaultTableModel(values.toArray(new String[][] {}), columnNames);
+		JTable table = new JTable(tableModel);
+		table.setEnabled(false);
+		table.getTableHeader().setResizingAllowed(false);
 		table.getTableHeader().setReorderingAllowed(false);
+		table.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
+		ButtonEditor buttonEditor = new ButtonEditor(new JTextField());
+		table.getColumnModel().getColumn(5).setCellEditor(buttonEditor);
+		
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		        int row = table.rowAtPoint(evt.getPoint());
+		        int col = table.columnAtPoint(evt.getPoint());
+		        if (row >= 0 && col == 5) {
+		        	
+		        	starMenuPanel.hide();
+		        	
+		        	if(table.getValueAt(row,1).toString().equals("Email"))
+		        		emailPanel(table.getValueAt(row, 2).toString(), table.getValueAt(row, 3).toString(), 
+		        			table.getValueAt(row, 4).toString());
+		        	if(table.getValueAt(row,1).toString().equals("Facebook"))
+		        		facebookPanel(table.getValueAt(row, 4).toString());
+		        	if(table.getValueAt(row,1).toString().equals("Twitter"))
+		        		twitterPanel(table.getValueAt(row, 4).toString());
+		        } 
+		    }
+		});
+		
 		scrollPane.setViewportView(table);
-
+		
+		
 		starMenuPanel.add(getMenuBar(starMenuPanel));
 		starMenuPanel.add(filterLabel);
 		starMenuPanel.add(filterComboBox);
@@ -468,7 +515,7 @@ public class Panels {
 		starMenuPanel.add(scrollPane);
 	}
 
-	private void emailPanel() {
+	private void emailPanel(String sender, String subject, String content) {
 
 		JPanel emailPanel = new JPanel();
 		frame.getContentPane().add(emailPanel);
@@ -478,19 +525,19 @@ public class Panels {
 		JLabel sendLabel = new JLabel("Send to:");
 		sendLabel.setBounds(30, 58, 75, 21);
 
-		JTextField sendText = new JTextField();
+		JTextField sendText = new JTextField(sender);
 		sendText.setBounds(83, 58, 489, 20);
 
 		JLabel subjectLabel = new JLabel("Subject: ");
 		subjectLabel.setBounds(30, 99, 75, 21);
 
-		JTextField subjectText = new JTextField();
+		JTextField subjectText = new JTextField(subject);
 		subjectText.setBounds(83, 99, 489, 20);
 
 		JLabel emailLabel = new JLabel("Email content:");
 		emailLabel.setBounds(30, 141, 103, 21);
 
-		JTextArea emailText = new JTextArea();
+		JTextArea emailText = new JTextArea(content);
 		JScrollPane scrollPane = new JScrollPane(emailText);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		emailText.setLineWrap(true);
@@ -524,14 +571,14 @@ public class Panels {
 		emailPanel.add(btnSend);
 	}
 
-	private void facebookPanel() {
+	private void facebookPanel(String content) {
 
 		JPanel facebookPanel = new JPanel();
 		frame.getContentPane().add(facebookPanel);
 
 		facebookPanel.setLayout(null);
 
-		JTextArea post = new JTextArea("Facebook");
+		JTextArea post = new JTextArea(content);
 		JScrollPane scrollPanePost = new JScrollPane(post);
 		scrollPanePost.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		post.setLineWrap(true);
@@ -580,14 +627,14 @@ public class Panels {
 		facebookPanel.add(btnOk);
 	}
 
-	private void twitterPanel() {
+	private void twitterPanel(String content) {
 
 		JPanel twitterPanel = new JPanel();
 		frame.getContentPane().add(twitterPanel);
 
 		twitterPanel.setLayout(null);
 
-		JTextArea tweet = new JTextArea("Tweet");
+		JTextArea tweet = new JTextArea(content);
 		JScrollPane scrollPaneTweet = new JScrollPane(tweet);
 		scrollPaneTweet.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		tweet.setLineWrap(true);
