@@ -17,8 +17,6 @@ public class Facebook {
 	 * 
 	 * @param values array to insert post´s of facebook
 	 */
-	
-
 	public void viewPosts(List<String[]> values) {
 		/* 
 		 * Facebook API Tutorials in Java # 1 | Setup Development Environment 
