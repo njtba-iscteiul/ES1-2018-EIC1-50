@@ -135,7 +135,7 @@ public class Panels {
 	 * @wbp.parser.entryPoint
 	 */
 	
-	private void registerPanel() {
+	public void registerPanel() {
 
 		JPanel registerPanel = new JPanel();
 		frame.getContentPane().add(registerPanel);
@@ -273,7 +273,7 @@ public class Panels {
 	 * @return JMenuBar returns a JMenuBar to insert in all panels
 	 */
 	
-	private JMenuBar getMenuBar(JPanel atualPanel) {
+	public JMenuBar getMenuBar(JPanel atualPanel) {
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 625, 21);
@@ -390,7 +390,7 @@ public class Panels {
 	 * First panel after login, in this panel we have some information of the user and some shorcuts
 	 */
 
-	private void startPanel() {
+	public void startPanel() {
 
 		JPanel initialPanel = new JPanel();
 		frame.getContentPane().add(initialPanel);
@@ -454,7 +454,7 @@ public class Panels {
 	 * This panel has the option to filter the table information.
 	 */
 	
-	private void infoPanel() {
+	public void infoPanel() {
 
 		JPanel starMenuPanel = new JPanel();
 		frame.getContentPane().add(starMenuPanel);
@@ -551,7 +551,7 @@ public class Panels {
 	 * @param content String with the email's content we selected or we want to send.
 	 */
 
-	private void emailPanel(String sender, String subject, String content) {
+	public void emailPanel(String sender, String subject, String content) {
 
 		JPanel emailPanel = new JPanel();
 		frame.getContentPane().add(emailPanel);
@@ -614,7 +614,7 @@ public class Panels {
 	 * @param content String with post content
 	 */
 
-	private void facebookPanel(String content) {
+	public void facebookPanel(String content) {
 
 		JPanel facebookPanel = new JPanel();
 		frame.getContentPane().add(facebookPanel);
@@ -677,7 +677,7 @@ public class Panels {
 	 * @param content String with post content
 	 */
 	
-	private void twitterPanel(String content) {
+	public void twitterPanel(String content) {
 
 		JPanel twitterPanel = new JPanel();
 		frame.getContentPane().add(twitterPanel);
@@ -738,7 +738,7 @@ public class Panels {
 	 * of this file.
 	 */
 
-	private void xmlPanel() {
+	public void xmlPanel() {
 
 		JPanel xmlPanel = new JPanel();
 		frame.getContentPane().add(xmlPanel);

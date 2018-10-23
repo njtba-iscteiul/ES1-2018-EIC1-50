@@ -88,7 +88,7 @@ public class Xml {
 	 * Method to add filters for our information (email, facebook, twitter)
 	 */
 	
-	private static void addFilters() {
+	public static void addFilters() {
 		
 		Element project = document.createElement("Project");
 		
@@ -170,7 +170,7 @@ public class Xml {
 	 * @param document document with data to write.
 	 */
 	
-	private static void writeFile(Document document) {
+	public static void writeFile(Document document) {
 		
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = null;
