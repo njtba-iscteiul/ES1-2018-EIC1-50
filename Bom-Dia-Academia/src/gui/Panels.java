@@ -551,17 +551,23 @@ public class Panels {
 	 * @param content String with the email's content we selected or we want to send.
 	 */
 
-	public void emailPanel(String sender, String subject, String content) {
+	public void emailPanel(String from, String subject, String content) {
 
 		JPanel emailPanel = new JPanel();
 		frame.getContentPane().add(emailPanel);
 
 		emailPanel.setLayout(null);
-
-		JLabel sendLabel = new JLabel("Send to:");
-		sendLabel.setBounds(30, 58, 75, 21);
-
-		JTextField sendText = new JTextField(sender);
+		
+		JLabel fromOrSendLabel = null;
+		if(!from.equals("")) {
+			fromOrSendLabel = new JLabel("From:");
+			fromOrSendLabel.setBounds(30, 58, 75, 21);
+		} else {
+			fromOrSendLabel = new JLabel("Send to:");
+			fromOrSendLabel.setBounds(30, 58, 75, 21);
+		}
+		
+		JTextField sendText = new JTextField(from);
 		sendText.setBounds(83, 58, 489, 20);
 
 		JLabel subjectLabel = new JLabel("Subject: ");
@@ -578,33 +584,49 @@ public class Panels {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		emailText.setLineWrap(true);
 		scrollPane.setBounds(30, 173, 542, 176);
+		
+		JButton respondOrSend = null;
 
-		JButton btnSend = new JButton("Send");
-		btnSend.setBounds(268, 386, 95, 40);
+		if(!from.equals("")) {
+			respondOrSend = new JButton("Respond");
+			respondOrSend.setBounds(268, 386, 95, 40);
+	
+			respondOrSend.addActionListener(new ActionListener() {
 
-		btnSend.addActionListener(new ActionListener() {
-
-			Object[] options = { "Info", "New email" };
-
-			public void actionPerformed(ActionEvent e) {
-				int option = JOptionPane.showOptionDialog(null, "Email successfully sent", "Email",
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
-
-				if (option == 0) {
+				public void actionPerformed(ActionEvent e) {
 					emailPanel.hide();
-					infoPanel();
+					emailPanel("", "", "");
 				}
-			}
-		});
+			});
+		} else {
+			respondOrSend = new JButton("Send");
+			respondOrSend.setBounds(268, 386, 95, 40);
+
+			respondOrSend.addActionListener(new ActionListener() {
+
+				Object[] options = { "Start", "New email" };
+
+				public void actionPerformed(ActionEvent e) {
+					int option = JOptionPane.showOptionDialog(null, "Email successfully sent", "Email",
+							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+
+					if (option == 0) {
+						emailPanel.hide();
+						startPanel();
+					}
+				}
+			});
+		}
+
 
 		emailPanel.add(getMenuBar(emailPanel));
-		emailPanel.add(sendLabel);
+		emailPanel.add(fromOrSendLabel);
 		emailPanel.add(sendText);
 		emailPanel.add(subjectLabel);
 		emailPanel.add(subjectText);
 		emailPanel.add(emailLabel);
 		emailPanel.add(scrollPane);
-		emailPanel.add(btnSend);
+		emailPanel.add(respondOrSend);
 	}
 	
 	/**

@@ -42,7 +42,7 @@ public class Email {
 			/* Get the messages which is unread in the Inbox */
 			javax.mail.Message[] messages = inbox.getMessages(); //search(new FlagTerm(new Flags(Flag.SEEN), false));
 
-			for (int i = messages.length - 5; i < messages.length; i++) {
+			for (int i = messages.length - 25; i < messages.length; i++) {
 				javax.mail.Message message = messages[i];
 				Address[] froms = message.getFrom();
 				String from = ((InternetAddress) froms[0]).getAddress();
