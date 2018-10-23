@@ -15,8 +15,16 @@ import com.auxilii.msgparser.MsgParser;
 
 public class Email {
 
-	// private javax.mail.Message[] emails;
+	/**
+	 * 
+	 * Method to receive email´s with iscte information from outlook account (@iscte-iul.pt)
+	 * 
+	 * @param email email we want to receive emails
+	 * @param password password for the email
+	 * @param values array to insert emails
+	 */
 
+	
 	public void receiveEmail(String email, String password, List<String[]> values) {
 		try {
 

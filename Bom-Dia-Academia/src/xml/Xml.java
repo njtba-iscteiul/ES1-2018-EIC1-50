@@ -34,6 +34,16 @@ public class Xml {
 	private static Document document;
 	private final static String PASSWORD = "admin";
 	
+	/**
+	 * 
+	 * Method to do a registration, this method starts to create a xml file, if this file doesn't exist, creates a document to insert 
+	 * register data and in the end writes the data in the xml file.
+	 * 
+	 * @param emailText Email of the app and email, facebook, twitter account
+	 * @param usernameText Username we want in this app
+	 * @param passwordText password we want in this app
+	 */
+	
 	public static void addRegister(String emailText, String usernameText, String passwordText) {
 		
 		createFile();
@@ -74,6 +84,10 @@ public class Xml {
 		JOptionPane.showMessageDialog(null, "Complete register!", "Register", 1);
 	}
 	
+	/**
+	 * Method to add filters for our information (email, facebook, twitter)
+	 */
+	
 	private static void addFilters() {
 		
 		Element project = document.createElement("Project");
@@ -101,6 +115,10 @@ public class Xml {
 		writeFile(document);
 	}
 	
+	/**
+	 * Method to create the xml file
+	 */
+	
 	public static void createFile() {
 		
 		f = new File("./config.xml");
@@ -115,6 +133,12 @@ public class Xml {
 			}	
 		}
 	}
+	
+	/**
+	 * Method to create a document for our data we want to insert in xml file
+	 * 
+	 * @return a document that will be used to insert register data or filters
+	 */
 	
 	public static Document createDocument() {
 		
@@ -140,6 +164,12 @@ public class Xml {
 		return document;
 	}
 	
+	/**
+	 * Method to write data in xml file
+	 * 
+	 * @param document document with data to write.
+	 */
+	
 	private static void writeFile(Document document) {
 		
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -164,6 +194,13 @@ public class Xml {
 		}
 	}
 
+	/**
+	 * 
+	 * Method to read a xml file and insert the content in the frame textArea.
+	 * 
+	 * @param textArea frame textArea so the user sees the content of xml file
+	 */
+	
 	public static void readFile(JTextArea textArea) {
 		
 		FileReader fileReader = null;
@@ -197,6 +234,13 @@ public class Xml {
 		    }
 		}
 	}
+	
+	/**
+	 * 
+	 * Method to save changes made in xml file
+	 * 
+	 * @param textArea frame textArea where the user makes changes.
+	 */
 
 	public static void saveFile(JTextArea textArea) {
 		
@@ -219,6 +263,13 @@ public class Xml {
 		}
 	}
 	
+	/**
+	 * 
+	 * Method to check if the password is correct, if it is the content of xml can be displayed
+	 * 
+	 * @param atualPanel panel to return if we want to cancel the view of xml file
+	 */
+	
 	public static void checkPassword(JPanel atualPanel) {
 			
 		JPasswordField pwd = new JPasswordField(10);
@@ -236,6 +287,13 @@ public class Xml {
 				JOptionPane.showMessageDialog(null, "Password incorrect", "Alert", 2);
 		}	
 	}
+	
+	/**
+	 * 
+	 * Method to return the filters in xml file
+	 * 
+	 * @return array with the filters
+	 */
 	
 	public static String[] getFilters() {
 		

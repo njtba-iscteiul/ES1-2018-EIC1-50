@@ -8,6 +8,13 @@ import twitter4j.api.TimelinesResources;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class Twitter {
+	
+	/**
+	 * 
+	 * Method to search tweets on twitter account with iscte information
+	 * 	
+	 * @param values array to insert tweets
+	 */
 
 	public void viewTweets(List<String[]> values) {
 		// http://twitter4j.org

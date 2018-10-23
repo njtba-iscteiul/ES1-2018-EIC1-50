@@ -8,6 +8,20 @@ import javax.swing.JOptionPane;
 import xml.Xml;
 
 public class Register {
+	
+	/**
+	 * 
+	 * Method to confirm register data, email must be @iscte-iul.pt and the fields can't be null.
+	 * 
+	 * @param email email to register, this email is the same one we register on facebook and twitter accounts
+	 * @param username username we want in the app
+	 * @param password password we want in the app
+	 * @param confirmPassword confirm password of the app
+	 * @param emailPassword email password that we want to use in this account
+	 * @param facebookPassword facebook password that we want to use in this account
+	 * @param twitterPassword twitter password that we want to use in this account
+	 * @return returns true if all data is valid and returns false if something is invalid
+	 */
 
 	public static boolean confirmData(String email, String username, String password, String confirmPassword,
 			String emailPassword, String facebookPassword, String twitterPassword) {

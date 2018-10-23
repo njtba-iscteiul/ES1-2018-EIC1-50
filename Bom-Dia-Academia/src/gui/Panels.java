@@ -46,13 +46,17 @@ public class Panels {
 	JTextField username;
 
 	/**
-	 * Create the panel.
+	 * Panels constructor
 	 * 
-	 * @param JFrame frame
+	 * @param JFrame App frame
 	 */
 	public Panels(JFrame frame) {
 		this.frame = frame;
 	}
+	
+	/**
+	 * First app panel, in this panel we can login or register a new account
+	 */
 
 	public void loginPanel() {
 
@@ -124,8 +128,13 @@ public class Panels {
 	}
 
 	/**
+	 * Register panel, in this panel we must choose an email, username and password for our app. 
+	 * We must choose a password for the email, facebook and twitter, facebook and twitter must have the same email as the one we are registering.
+	 */
+	/**
 	 * @wbp.parser.entryPoint
 	 */
+	
 	private void registerPanel() {
 
 		JPanel registerPanel = new JPanel();
@@ -256,6 +265,14 @@ public class Panels {
 		registerPanel.add(btnCancel);
 	}
 
+	/**
+	 * 
+	 * App menu bar, this menu has the option to change the panels.
+	 * 
+	 * @param atualPanel panel to hide and insert a new one
+	 * @return JMenuBar returns a JMenuBar to insert in all panels
+	 */
+	
 	private JMenuBar getMenuBar(JPanel atualPanel) {
 
 		JMenuBar menuBar = new JMenuBar();
@@ -368,6 +385,10 @@ public class Panels {
 
 		return menuBar;
 	}
+	
+	/**
+	 * First panel after login, in this panel we have some information of the user and some shorcuts
+	 */
 
 	private void startPanel() {
 
@@ -428,6 +449,11 @@ public class Panels {
 		initialPanel.add(btnConfigXml);
 	}
 
+	/**
+	 * Panel that has the table with emails, posts, and tweets. 
+	 * This panel has the option to filter the table information.
+	 */
+	
 	private void infoPanel() {
 
 		JPanel starMenuPanel = new JPanel();
@@ -514,6 +540,16 @@ public class Panels {
 		starMenuPanel.add(btnOk);
 		starMenuPanel.add(scrollPane);
 	}
+	
+	/**
+	 * 
+	 * Panel to view emails we choose in infoPanel. This panel has the option to send emails.
+	 * 
+	 * @param from String with the sender's email of the email selected
+	 * if this string is null this attribute changes to "send to" to insert the email we want to send.
+	 * @param subject String with the email's subject we selected or we want to send
+	 * @param content String with the email's content we selected or we want to send.
+	 */
 
 	private void emailPanel(String sender, String subject, String content) {
 
@@ -570,6 +606,13 @@ public class Panels {
 		emailPanel.add(scrollPane);
 		emailPanel.add(btnSend);
 	}
+	
+	/**
+	 * 
+	 * Panel to view a post we choose in infoPanel and comment if we want to
+	 * 
+	 * @param content String with post content
+	 */
 
 	private void facebookPanel(String content) {
 
@@ -627,6 +670,13 @@ public class Panels {
 		facebookPanel.add(btnOk);
 	}
 
+	/**
+	 * 
+	 * Panel to view a tweet we choose in infoPanel and retweet if we want to
+	 * 
+	 * @param content String with post content
+	 */
+	
 	private void twitterPanel(String content) {
 
 		JPanel twitterPanel = new JPanel();
@@ -682,6 +732,11 @@ public class Panels {
 		twitterPanel.add(scrollPaneRespond);
 		twitterPanel.add(btnOk);
 	}
+	
+	/**
+	 * Panel with password, if password is correct we can see the content of config.xml and we can edit and save the changes 
+	 * of this file.
+	 */
 
 	private void xmlPanel() {
 

@@ -11,6 +11,10 @@ public class Frame {
 	private JFrame frame;
 	private Panels panels;
 	
+	/**
+	 * App frame
+	 */
+	
 	public Frame() {
 		
 		frame = new JFrame("Bom Dia Academia");
@@ -23,10 +27,18 @@ public class Frame {
 		
 	}
 	
+	/**
+	 * Calls the first panel (Login panel)
+	 */
+	
 	private void addComponents() {
 		
 		panels.loginPanel();
 	}
+	
+	/**
+	 * Initializes the frame 
+	 */
 
 	public void init() {
 				
@@ -34,6 +46,10 @@ public class Frame {
 		centerFrame();
 		frame.setVisible(true);
 	}
+	
+	/**
+	 * App center frame
+	 */
 	
 	private void centerFrame() {
 		

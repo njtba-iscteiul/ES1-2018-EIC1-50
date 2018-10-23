@@ -10,6 +10,14 @@ import com.restfb.types.Post;
 import com.restfb.types.User;
 
 public class Facebook {
+	
+	/**
+	 * 
+	 * Method to search post´s in facebook account with iscte information
+	 * 
+	 * @param values array to insert post´s of facebook
+	 */
+	
 
 	public void viewPosts(List<String[]> values) {
 		/* 

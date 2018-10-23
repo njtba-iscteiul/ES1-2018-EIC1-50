@@ -9,6 +9,15 @@ import xml.Xml;
 
 public class Login {
 	
+	/**
+	 * 
+	 * Method to sign in, confirms user in config.xml file if that user exists the login is successful.
+	 * 
+	 * @param username username we want to login
+	 * @param password account password of username
+	 * @return
+	 */
+	
 	public static boolean login(String usernameText, String passwordText) {
 		
 		Xml.createFile();
