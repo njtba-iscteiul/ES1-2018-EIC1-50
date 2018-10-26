@@ -48,10 +48,11 @@ public class Facebook {
 		 * https://www.youtube.com/watch?v=wiFif4gOdFE&index=6&list=PLYPFxrXyK0BwiXNe09hTPjFqYbsWv8gxb
 		*/ 
 		String accessToken ;//= "EAAGZBEccjciEBAJ37ZAIbHKiL1Mo1HHex2pQTcs41dq8azfBvFGgt4eGgKBq12kSssOof51FKO0niKu7AaVKs3dy8W1ilqp4xcjFD1F9mmjJpVyeDnZAffUXRfh7zXL06BuSwQtfHMJbmJ079qCnkT844brHx966cz73JZBZBFy2Bv1rWu7T1rQddZCVpxywZCO6lDxoWDk2gZDZD";
-		accessToken = "EAAFjnm6XU2EBABps7owQsvynaVliKLVT8myZCM029bgo5QqZAvVz6XtuGZCPxnGHCEVDU2IphuhyiYEid7ZBrtVC8DJNp9f1ve2iJbYxHmcI732yBtEN4mZCD2H8bvYVuhJfaBLtv9JuLd4cLZBCzVr3nhPPBZB2Ysm5ZBcdQigwJzRpShQGihzZAkWjTurzLXknjyu7sKbIExQVXq5DqKqBK96CXNIVfyOsZD";	
+		accessToken = "EAAFjnm6XU2EBABCyc6dLzoepIZAfPN9wIDmcLZBxWaqjZCJh2fyoCvMGrq9ZCP35fTt7gSFwCkoRBypy7cMQZCWszjrQhU9ZC2jRPt8N6mXHaJZBmOvT3LOjnxCbINxfEZAPBYEKvCkDTnIfkiPZC7p0iMcBZCHgOhdJ9Gbl6hXiML9YQQ7C5B7Dqknu3gOMdzGZCkspem0I1ZB0C68zeEtEtbJNBPR7fKy1KV4ZD";	
 		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 		AccessToken extendedAccessToken = fbClient.obtainExtendedAccessToken("391007088104289", "5f6c7f0e1404b1b355f55990d52b0750");
-		
+//		System.out.println("Expires: " + extendedAccessToken.getExpires());
+	
 		Connection<Post> result = fbClient.fetchConnection("me/feed",Post.class);
 //		System.out.println("\nPosts:");
 		int counter = 0;

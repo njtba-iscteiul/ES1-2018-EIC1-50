@@ -1,4 +1,5 @@
 package gui;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -12,8 +13,18 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
@@ -33,6 +44,7 @@ import functionalities.Facebook;
 import functionalities.Login;
 import functionalities.Register;
 import functionalities.Twitter;
+import functionalities.ValuesOperations;
 import table.ButtonEditor;
 import table.ButtonRenderer;
 import xml.Xml;
@@ -44,6 +56,10 @@ public class Panels {
 
 	JFrame frame;
 	JTextField username;
+	List<String[]> values = new ArrayList<String[]>();
+	List<String[]> valuesToShow = new ArrayList<String[]>();
+	JComboBox filterComboBox = new JComboBox(Xml.getFilters());
+	JComboBox searchComboBox = new JComboBox(new String[] { "All time", "Last hour", "Last 24 hours", "Last week" });
 
 	/**
 	 * Panels constructor
@@ -53,7 +69,7 @@ public class Panels {
 	public Panels(JFrame frame) {
 		this.frame = frame;
 	}
-	
+
 	/**
 	 * First app panel, in this panel we can login or register a new account
 	 */
@@ -128,13 +144,13 @@ public class Panels {
 	}
 
 	/**
-	 * Register panel, in this panel we must choose an email, username and password for our app. 
-	 * We must choose a password for the email, facebook and twitter, facebook and twitter must have the same email as the one we are registering.
+	 * Register panel, in this panel we must choose an email, username and password
+	 * for our app. We must choose a password for the email, facebook and twitter,
+	 * facebook and twitter must have the same email as the one we are registering.
 	 */
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	
 	public void registerPanel() {
 
 		JPanel registerPanel = new JPanel();
@@ -272,7 +288,7 @@ public class Panels {
 	 * @param atualPanel panel to hide and insert a new one
 	 * @return JMenuBar returns a JMenuBar to insert in all panels
 	 */
-	
+
 	public JMenuBar getMenuBar(JPanel atualPanel) {
 
 		JMenuBar menuBar = new JMenuBar();
@@ -335,7 +351,7 @@ public class Panels {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				atualPanel.hide();
-				emailPanel("","","");
+				emailPanel("", "", "");
 			}
 		});
 
@@ -385,9 +401,10 @@ public class Panels {
 
 		return menuBar;
 	}
-	
+
 	/**
-	 * First panel after login, in this panel we have some information of the user and some shorcuts
+	 * First panel after login, in this panel we have some information of the user
+	 * and some shorcuts
 	 */
 
 	public void startPanel() {
@@ -450,29 +467,25 @@ public class Panels {
 	}
 
 	/**
-	 * Panel that has the table with emails, posts, and tweets. 
-	 * This panel has the option to filter the table information.
+	 * Panel that has the table with emails, posts, and tweets. This panel has the
+	 * option to filter the table information.
 	 */
-	
+
 	public void infoPanel() {
 
-		JPanel starMenuPanel = new JPanel();
-		frame.getContentPane().add(starMenuPanel);
+		JPanel infoPanel = new JPanel();
+		frame.getContentPane().add(infoPanel);
 
-		starMenuPanel.setLayout(null);
+		infoPanel.setLayout(null);
 
 		JLabel filterLabel = new JLabel("Filter: ");
 		filterLabel.setBounds(10, 35, 46, 14);
 
-		JComboBox filterComboBox = new JComboBox();
-		filterComboBox.setModel(new DefaultComboBoxModel(Xml.getFilters()));
 		filterComboBox.setBounds(66, 32, 95, 22);
 
 		JLabel searchLabel = new JLabel("Search by:");
 		searchLabel.setBounds(171, 35, 72, 14);
 
-		JComboBox searchComboBox = new JComboBox();
-		searchComboBox.setModel(new DefaultComboBoxModel(new String[] { "All time", "Last hour", "Last day", "Last week" }));
 		searchComboBox.setBounds(253, 32, 95, 20);
 
 		JTextField searchText = new JTextField();
@@ -486,20 +499,26 @@ public class Panels {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(10, 65, 588, 387);
 
+		ValuesOperations valuesOperations = new ValuesOperations();
+
 		Email e = new Email();
 		Facebook f = new Facebook();
 		Twitter t = new Twitter();
-		
+
 		String[] columnNames = { "Data", "Source", "Sender", "Subject", "Content", "View" };
 
-		List<String[]> values = new ArrayList<String[]>();
-		
-		e.receiveEmail("njtba@iscte-iul.pt", "WolfSonbra6799", values);
-		f.viewPosts(values);
-		t.viewTweets(values);
-		
-		TableModel tableModel = null;
-		tableModel = new DefaultTableModel(values.toArray(new String[][] {}), columnNames);
+		if (values.isEmpty()) {
+			e.receiveEmail("njtba@iscte-iul.pt", "WolfSonbra6799", values);
+			f.viewPosts(values);
+			t.viewTweets(values);
+			valuesOperations.sort(values);
+			
+			for (int i = 0; i < values.size(); i++) {
+				valuesToShow.add(values.get(i));
+			}
+		}
+
+		TableModel tableModel = new DefaultTableModel(valuesToShow.toArray(new String[][] {}), columnNames);
 		JTable table = new JTable(tableModel);
 		table.setEnabled(false);
 		table.getTableHeader().setResizingAllowed(false);
@@ -507,48 +526,72 @@ public class Panels {
 		table.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
 		ButtonEditor buttonEditor = new ButtonEditor(new JTextField());
 		table.getColumnModel().getColumn(5).setCellEditor(buttonEditor);
-		
-		table.addMouseListener(new java.awt.event.MouseAdapter() {
-		    @Override
-		    public void mouseClicked(java.awt.event.MouseEvent evt) {
-		        int row = table.rowAtPoint(evt.getPoint());
-		        int col = table.columnAtPoint(evt.getPoint());
-		        if (row >= 0 && col == 5) {
-		        	
-		        	starMenuPanel.hide();
-		        	
-		        	if(table.getValueAt(row,1).toString().equals("Email"))
-		        		emailPanel(table.getValueAt(row, 2).toString(), table.getValueAt(row, 3).toString(), 
-		        			table.getValueAt(row, 4).toString());
-		        	if(table.getValueAt(row,1).toString().equals("Facebook"))
-		        		facebookPanel(table.getValueAt(row, 4).toString());
-		        	if(table.getValueAt(row,1).toString().equals("Twitter"))
-		        		twitterPanel(table.getValueAt(row, 4).toString());
-		        } 
-		    }
+
+		filterComboBox.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				valuesToShow.clear();
+				valuesOperations.filter(filterComboBox, searchComboBox, values, valuesToShow);
+				infoPanel.hide();
+				infoPanel();
+			}
 		});
 		
+		searchComboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				valuesToShow.clear();
+				valuesOperations.filter(filterComboBox, searchComboBox, values, valuesToShow);
+				infoPanel.hide();
+				infoPanel();
+			}
+		});
+
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				int row = table.rowAtPoint(evt.getPoint());
+				int col = table.columnAtPoint(evt.getPoint());
+				if (row >= 0 && col == 5) {
+
+					infoPanel.hide();
+
+					if (table.getValueAt(row, 1).toString().equals("Email"))
+						emailPanel(table.getValueAt(row, 2).toString(), table.getValueAt(row, 3).toString(),
+								table.getValueAt(row, 4).toString());
+					if (table.getValueAt(row, 1).toString().equals("Facebook"))
+						facebookPanel(table.getValueAt(row, 4).toString());
+					if (table.getValueAt(row, 1).toString().equals("Twitter"))
+						twitterPanel(table.getValueAt(row, 4).toString());
+				}
+			}
+		});
+
 		scrollPane.setViewportView(table);
-		
-		
-		starMenuPanel.add(getMenuBar(starMenuPanel));
-		starMenuPanel.add(filterLabel);
-		starMenuPanel.add(filterComboBox);
-		starMenuPanel.add(searchLabel);
-		starMenuPanel.add(searchComboBox);
-		starMenuPanel.add(searchText);
-		starMenuPanel.add(btnOk);
-		starMenuPanel.add(scrollPane);
+
+		infoPanel.add(getMenuBar(infoPanel));
+		infoPanel.add(filterLabel);
+		infoPanel.add(filterComboBox);
+		infoPanel.add(searchLabel);
+		infoPanel.add(searchComboBox);
+		infoPanel.add(searchText);
+		infoPanel.add(btnOk);
+		infoPanel.add(scrollPane);
 	}
-	
+
 	/**
 	 * 
-	 * Panel to view emails we choose in infoPanel. This panel has the option to send emails.
+	 * Panel to view emails we choose in infoPanel. This panel has the option to
+	 * send emails.
 	 * 
-	 * @param from String with the sender's email of the email selected
-	 * if this string is null this attribute changes to "send to" to insert the email we want to send.
+	 * @param from    String with the sender's email of the email selected if this
+	 *                string is null this attribute changes to "send to" to insert
+	 *                the email we want to send.
 	 * @param subject String with the email's subject we selected or we want to send
-	 * @param content String with the email's content we selected or we want to send.
+	 * @param content String with the email's content we selected or we want to
+	 *                send.
 	 */
 
 	public void emailPanel(String from, String subject, String content) {
@@ -557,16 +600,16 @@ public class Panels {
 		frame.getContentPane().add(emailPanel);
 
 		emailPanel.setLayout(null);
-		
+
 		JLabel fromOrSendLabel = null;
-		if(!from.equals("")) {
+		if (!from.equals("")) {
 			fromOrSendLabel = new JLabel("From:");
 			fromOrSendLabel.setBounds(30, 58, 75, 21);
 		} else {
 			fromOrSendLabel = new JLabel("Send to:");
 			fromOrSendLabel.setBounds(30, 58, 75, 21);
 		}
-		
+
 		JTextField sendText = new JTextField(from);
 		sendText.setBounds(83, 58, 489, 20);
 
@@ -584,13 +627,13 @@ public class Panels {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		emailText.setLineWrap(true);
 		scrollPane.setBounds(30, 173, 542, 176);
-		
+
 		JButton respondOrSend = null;
 
-		if(!from.equals("")) {
+		if (!from.equals("")) {
 			respondOrSend = new JButton("Respond");
 			respondOrSend.setBounds(268, 386, 95, 40);
-	
+
 			respondOrSend.addActionListener(new ActionListener() {
 
 				public void actionPerformed(ActionEvent e) {
@@ -608,7 +651,8 @@ public class Panels {
 
 				public void actionPerformed(ActionEvent e) {
 					int option = JOptionPane.showOptionDialog(null, "Email successfully sent", "Email",
-							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options,
+							options[1]);
 
 					if (option == 0) {
 						emailPanel.hide();
@@ -617,7 +661,6 @@ public class Panels {
 				}
 			});
 		}
-
 
 		emailPanel.add(getMenuBar(emailPanel));
 		emailPanel.add(fromOrSendLabel);
@@ -628,7 +671,7 @@ public class Panels {
 		emailPanel.add(scrollPane);
 		emailPanel.add(respondOrSend);
 	}
-	
+
 	/**
 	 * 
 	 * Panel to view a post we choose in infoPanel and comment if we want to
@@ -698,7 +741,7 @@ public class Panels {
 	 * 
 	 * @param content String with post content
 	 */
-	
+
 	public void twitterPanel(String content) {
 
 		JPanel twitterPanel = new JPanel();
@@ -754,10 +797,10 @@ public class Panels {
 		twitterPanel.add(scrollPaneRespond);
 		twitterPanel.add(btnOk);
 	}
-	
+
 	/**
-	 * Panel with password, if password is correct we can see the content of config.xml and we can edit and save the changes 
-	 * of this file.
+	 * Panel with password, if password is correct we can see the content of
+	 * config.xml and we can edit and save the changes of this file.
 	 */
 
 	public void xmlPanel() {
