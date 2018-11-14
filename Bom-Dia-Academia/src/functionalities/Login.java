@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import xml.Xml;
+import files.Xml;
 
 public class Login {
 	
@@ -17,6 +17,13 @@ public class Login {
 	 * @param password account password of username
 	 * @return
 	 */
+	
+	private static String userEmail;
+	private static String userPassword;
+	private static String consumerKey;
+	private static String consumerSecret;
+	private static String acessToken;
+	private static String acessTokenSecret;
 	
 	public static boolean login(String usernameText, String passwordText) {
 		
@@ -38,7 +45,13 @@ public class Login {
 					NodeList passwordList = document.getElementsByTagName("Password");
 
 					if (passwordList.item(i).getTextContent().equals(passwordText)) {
-						JOptionPane.showMessageDialog(null, "Sucessful login!", "Login", 1);
+						JOptionPane.showMessageDialog(null, "Sucessful login! \nDoing connections wait please...", "Login", 1);
+						userEmail = document.getElementsByTagName("Email").item(i).getTextContent();
+						userPassword = document.getElementsByTagName("Email_Password").item(i).getTextContent();
+						consumerKey = document.getElementsByTagName("ConsumerKey").item(i).getTextContent();
+						consumerSecret = document.getElementsByTagName("ConsumerSecret").item(i).getTextContent();
+						acessToken = document.getElementsByTagName("AcessToken").item(i).getTextContent();
+						acessTokenSecret = document.getElementsByTagName("AcessTokenSecret").item(i).getTextContent();
 						return true;
 					} else {
 						JOptionPane.showMessageDialog(null, "Password incorrect", "Login", 1);
@@ -51,5 +64,29 @@ public class Login {
 			}
 		}
 		return false;
+	}
+	
+	public static String getUserEmail() {
+		return userEmail;
+	}
+	
+	public static String getUserPassword() {
+		return userPassword;
+	}
+	
+	public static String getConsumerKey() {
+		return consumerKey;
+	}
+	
+	public static String getConsumerSecret() {
+		return consumerSecret;
+	}
+	
+	public static String getAcessToken() {
+		return acessToken;
+	}
+	
+	public static String getAcessTokenSecret() {
+		return acessTokenSecret;
 	}
 }

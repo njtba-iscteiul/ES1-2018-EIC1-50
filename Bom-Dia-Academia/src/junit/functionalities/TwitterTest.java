@@ -11,7 +11,7 @@ import functionalities.Twitter;
 
 class TwitterTest {
 
-	Twitter twitter = new Twitter();
+	Twitter twitter = new Twitter("","","","");
 	
 	@Test
 	void test() {

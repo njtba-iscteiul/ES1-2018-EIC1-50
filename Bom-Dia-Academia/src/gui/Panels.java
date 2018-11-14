@@ -13,6 +13,11 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,6 +29,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.TimeZone;
 
 import javax.swing.JPasswordField;
@@ -39,6 +45,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.TableView.TableCell;
 
+import files.Json;
+import files.Xml;
 import functionalities.Email;
 import functionalities.Facebook;
 import functionalities.Login;
@@ -47,19 +55,23 @@ import functionalities.Twitter;
 import functionalities.ValuesOperations;
 import table.ButtonEditor;
 import table.ButtonRenderer;
-import xml.Xml;
 
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 
 public class Panels {
 
-	JFrame frame;
-	JTextField username;
-	List<String[]> values = new ArrayList<String[]>();
-	List<String[]> valuesToShow = new ArrayList<String[]>();
-	JComboBox filterComboBox = new JComboBox(Xml.getFilters());
-	JComboBox searchComboBox = new JComboBox(new String[] { "All time", "Last hour", "Last 24 hours", "Last week" });
+	private JFrame frame;
+	private JTextField username;
+	private List<String[]> values = new ArrayList<String[]>();
+	private List<String[]> valuesToShow = new ArrayList<String[]>();
+	private JComboBox filterComboBox = new JComboBox(Xml.getFilters());
+	private JComboBox searchComboBox = new JComboBox(new String[] { "All time", "Last hour", "Last 24 hours", "Last week" });
+	private JPasswordField facebookAcessToken;
+	private Email email;
+	private Facebook facebook;
+	private Twitter twitter;
+	private ValuesOperations valuesOperations = new ValuesOperations();
 
 	/**
 	 * Panels constructor
@@ -73,7 +85,6 @@ public class Panels {
 	/**
 	 * First app panel, in this panel we can login or register a new account
 	 */
-
 	public void loginPanel() {
 
 		JPanel loginPanel = new JPanel();
@@ -96,7 +107,7 @@ public class Panels {
 		password.setBounds(143, 87, 153, 23);
 
 		JButton login = new JButton("Login");
-		login.setBounds(66, 151, 95, 40);
+		login.setBounds(66, 217, 95, 40);
 
 		login.addActionListener(new ActionListener() {
 
@@ -106,9 +117,13 @@ public class Panels {
 				boolean login = Login.login(username.getText(), password.getText());
 
 				if (login == true) {
-
+	
+					doConnections();
+									
+					JOptionPane.showMessageDialog(null, "Connections done!", "Connections", 1);
+					
 					loginPanel.hide();
-
+					
 					frame.setSize(625, 500);
 					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 					frame.setLocation(dim.width / 2 - frame.getWidth() / 2, dim.height / 2 - frame.getHeight() / 2);
@@ -119,28 +134,38 @@ public class Panels {
 		});
 
 		JButton register = new JButton("Register");
-		register.setBounds(201, 151, 95, 40);
+		register.setBounds(201, 217, 95, 40);
 
 		register.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				loginPanel.hide();
 
-				frame.setSize(375, 525);
+				frame.setSize(375, 545);
 				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 				frame.setLocation(dim.width / 2 - frame.getWidth() / 2, dim.height / 2 - frame.getHeight() / 2);
 
 				registerPanel();
 			}
 		});
+		
+		JLabel facebookAcessTokenLabel = new JLabel("Facebook Acess Token: ");
+		facebookAcessTokenLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		facebookAcessTokenLabel.setBounds(117, 135, 142, 24);
 
+		facebookAcessToken = new JPasswordField();
+		facebookAcessToken.setBounds(66, 170, 230, 23);
+		
 		loginPanel.add(usernameLabel);
 		loginPanel.add(username);
 		loginPanel.add(passwordLabel);
 		loginPanel.add(password);
 		loginPanel.add(login);
 		loginPanel.add(register);
+		loginPanel.add(facebookAcessToken);
+		loginPanel.add(facebookAcessTokenLabel);
 	}
 
 	/**
@@ -148,9 +173,7 @@ public class Panels {
 	 * for our app. We must choose a password for the email, facebook and twitter,
 	 * facebook and twitter must have the same email as the one we are registering.
 	 */
-	/**
-	 * @wbp.parser.entryPoint
-	 */
+
 	public void registerPanel() {
 
 		JPanel registerPanel = new JPanel();
@@ -196,28 +219,36 @@ public class Panels {
 		JPasswordField emailPassword = new JPasswordField();
 		emailPassword.setBounds(156, 228, 167, 22);
 
-		JLabel facebookAccountLabel = new JLabel("Facebook account:");
+		JLabel facebookAccountLabel = new JLabel("Twitter account:");
 		facebookAccountLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		facebookAccountLabel.setBounds(31, 271, 131, 21);
 
-		JLabel facebookPasswordLabel = new JLabel("Password: ");
-		facebookPasswordLabel.setBounds(31, 304, 75, 21);
+		JLabel consumerKeyLabel = new JLabel("Consumer Key:");
+		consumerKeyLabel.setBounds(31, 304, 104, 21);
 
-		JPasswordField facebookPassword = new JPasswordField();
-		facebookPassword.setBounds(156, 303, 167, 22);
+		JPasswordField consumerKey = new JPasswordField();
+		consumerKey.setBounds(156, 303, 167, 22);
 
-		JLabel twitterAccountLabel = new JLabel("Twitter account:");
-		twitterAccountLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
-		twitterAccountLabel.setBounds(31, 348, 131, 21);
+		JLabel consumerSecretLabel = new JLabel("Consumer Secret:");
+		consumerSecretLabel.setBounds(31, 336, 104, 21);
 
-		JLabel twitterPasswordLabel = new JLabel("Password: ");
-		twitterPasswordLabel.setBounds(31, 380, 75, 21);
+		JPasswordField consumerSecret = new JPasswordField();
+		consumerSecret.setBounds(156, 336, 167, 22);
 
-		JPasswordField twitterPassword = new JPasswordField();
-		twitterPassword.setBounds(156, 380, 167, 22);
-
+		JLabel accessTokenLabel = new JLabel("Access Token: ");
+		accessTokenLabel.setBounds(31, 368, 115, 21);
+		
+		JPasswordField acessToken = new JPasswordField();
+		acessToken.setBounds(156, 369, 167, 22);
+		
+		JLabel acessTokenSecretLabel = new JLabel("Access Token Secret: ");
+		acessTokenSecretLabel.setBounds(31, 400, 131, 21);
+		
+		JPasswordField acessTokenSecret = new JPasswordField();
+		acessTokenSecret.setBounds(156, 400, 167, 22);
+		
 		JButton register = new JButton("Register");
-		register.setBounds(67, 427, 95, 40);
+		register.setBounds(67, 444, 95, 40);
 
 		register.addActionListener(new ActionListener() {
 
@@ -225,14 +256,14 @@ public class Panels {
 			public void actionPerformed(ActionEvent e) {
 
 				boolean confirmData = Register.confirmData(email.getText(), username.getText(), password.getText(),
-						confirmPassword.getText(), emailPassword.getText(), facebookPassword.getText(),
-						twitterPassword.getText());
+						confirmPassword.getText(), emailPassword.getText(), consumerKey.getText(),
+						consumerSecret.getText(), acessToken.getText(), acessTokenSecret.getText());
 
 				if (confirmData == true) {
 
 					registerPanel.hide();
 
-					frame.setSize(375, 265);
+					frame.setSize(375, 320);
 					Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 					frame.setLocation(dim.width / 2 - frame.getWidth() / 2, dim.height / 2 - frame.getHeight() / 2);
 
@@ -242,7 +273,7 @@ public class Panels {
 		});
 
 		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(195, 427, 95, 40);
+		btnCancel.setBounds(195, 444, 95, 40);
 
 		btnCancel.addActionListener(new ActionListener() {
 
@@ -251,7 +282,7 @@ public class Panels {
 
 				registerPanel.hide();
 
-				frame.setSize(375, 265);
+				frame.setSize(375, 320);
 				Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 				frame.setLocation(dim.width / 2 - frame.getWidth() / 2, dim.height / 2 - frame.getHeight() / 2);
 
@@ -272,11 +303,14 @@ public class Panels {
 		registerPanel.add(emailPasswordLabel);
 		registerPanel.add(emailPassword);
 		registerPanel.add(facebookAccountLabel);
-		registerPanel.add(facebookPasswordLabel);
-		registerPanel.add(facebookPassword);
-		registerPanel.add(twitterAccountLabel);
-		registerPanel.add(twitterPasswordLabel);
-		registerPanel.add(twitterPassword);
+		registerPanel.add(consumerKeyLabel);
+		registerPanel.add(consumerKey);
+		registerPanel.add(consumerSecretLabel);
+		registerPanel.add(consumerSecret);
+		registerPanel.add(accessTokenLabel);
+		registerPanel.add(acessToken);
+		registerPanel.add(acessTokenSecretLabel);
+		registerPanel.add(acessTokenSecret);
 		registerPanel.add(register);
 		registerPanel.add(btnCancel);
 	}
@@ -373,9 +407,12 @@ public class Panels {
 			}
 		});
 
-		menuActions.add(menuItemSendEmail);
-		menuActions.add(menuItemFacebookPost);
-		menuActions.add(menuItemTwitterTweet);
+		if(email.getEmailConnect() == true)
+			menuActions.add(menuItemSendEmail);
+		if(facebook.getFacebookConnect() == true)
+			menuActions.add(menuItemFacebookPost);
+		if(twitter.getTwitterConnect() == true)
+			menuActions.add(menuItemTwitterTweet);
 
 		JMenu menuXml = new JMenu("Xml");
 
@@ -403,15 +440,41 @@ public class Panels {
 	}
 
 	/**
+	 * @wbp.parser.entryPoint
+	 */
+	public void doConnections() {
+		
+		email = new Email();
+		facebook = new Facebook(facebookAcessToken.getText());
+		twitter = new Twitter(Login.getConsumerKey(), Login.getConsumerSecret(), Login.getAcessToken(), Login.getAcessTokenSecret());
+		 
+		email.receiveEmail(Login.getUserEmail(), Login.getUserPassword(), values);
+		facebook.viewPosts(values);
+		twitter.viewTweets(values);
+		
+		Json json = new Json(username.getText(), values, email.getEmailConnect(), facebook.getFacebookConnect(), 
+				twitter.getTwitterConnect());
+		
+		Json.createFile();
+		Json.add();
+		Json.write();
+		
+		valuesOperations.sort(values);
+		
+		for (int i = 0; i < values.size(); i++) {
+			valuesToShow.add(values.get(i));
+		}	
+	}
+	
+	/**
 	 * First panel after login, in this panel we have some information of the user
 	 * and some shorcuts
 	 */
-
 	public void startPanel() {
 
 		JPanel initialPanel = new JPanel();
 		frame.getContentPane().add(initialPanel);
-
+		
 		initialPanel.setLayout(null);
 
 		JLabel welcomeLabel = new JLabel("Welcome");
@@ -421,20 +484,22 @@ public class Panels {
 		JTextArea userInfo = new JTextArea();
 		userInfo.setEditable(false);
 		userInfo.setBackground(new Color(238, 238, 238));
-		userInfo.setBounds(159, 141, 290, 99);
+		userInfo.setBounds(159, 141, 290, 163);
 
 		userInfo.setDisabledTextColor(Color.BLACK);
 		userInfo.setText("Username: " + username.getText() + "\n\n");
-		userInfo.append("Email: \n\n");
+		userInfo.append("Email: " + Login.getUserEmail() + "\n\n");
 //		userInfo.append("Facebook: \n");
 //		userInfo.append("Twitter: \n");
-		userInfo.append("Connect: ");
-
+		userInfo.append("Email connect: " + email.getEmailConnect() + "\n\n");
+		userInfo.append("Facebook connect: " + facebook.getFacebookConnect() + "\n\n");
+		userInfo.append("Email connect: " + twitter.getTwitterConnect());
+		
 		JLabel shortcutsLabel = new JLabel("Shortcuts: ");
-		shortcutsLabel.setBounds(275, 262, 89, 23);
+		shortcutsLabel.setBounds(275, 329, 89, 23);
 
 		JButton btnInfo = new JButton("Info");
-		btnInfo.setBounds(159, 308, 95, 40);
+		btnInfo.setBounds(159, 375, 95, 40);
 
 		btnInfo.addActionListener(new ActionListener() {
 
@@ -446,7 +511,7 @@ public class Panels {
 		});
 
 		JButton btnConfigXml = new JButton("config.xml");
-		btnConfigXml.setBounds(354, 308, 95, 40);
+		btnConfigXml.setBounds(354, 375, 95, 40);
 
 		btnConfigXml.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -470,7 +535,6 @@ public class Panels {
 	 * Panel that has the table with emails, posts, and tweets. This panel has the
 	 * option to filter the table information.
 	 */
-
 	public void infoPanel() {
 
 		JPanel infoPanel = new JPanel();
@@ -497,31 +561,14 @@ public class Panels {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(10, 65, 588, 387);
-
-		ValuesOperations valuesOperations = new ValuesOperations();
-
-		Email e = new Email();
-		Facebook f = new Facebook();
-		Twitter t = new Twitter();
+		scrollPane.setBounds(10, 65, 588, 321);
 
 		String[] columnNames = { "Data", "Source", "Sender", "Subject", "Content", "View" };
-
-		if (values.isEmpty()) {
-			e.receiveEmail("njtba@iscte-iul.pt", "WolfSonbra6799", values);
-			f.viewPosts(values);
-			t.viewTweets(values);
-			valuesOperations.sort(values);
-			
-			for (int i = 0; i < values.size(); i++) {
-				valuesToShow.add(values.get(i));
-			}
-		}
 
 		TableModel tableModel = new DefaultTableModel(valuesToShow.toArray(new String[][] {}), columnNames);
 		JTable table = new JTable(tableModel);
 		table.setEnabled(false);
-		table.getTableHeader().setResizingAllowed(false);
+		//table.getTableHeader().setResizingAllowed(false);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
 		ButtonEditor buttonEditor = new ButtonEditor(new JTextField());
@@ -571,6 +618,21 @@ public class Panels {
 
 		scrollPane.setViewportView(table);
 
+		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.setBounds(258, 405, 95, 40);
+		
+		btnRefresh.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				values.clear();
+				valuesToShow.clear();
+				doConnections();
+				infoPanel.hide();
+				infoPanel();
+			}
+		});
+		
 		infoPanel.add(getMenuBar(infoPanel));
 		infoPanel.add(filterLabel);
 		infoPanel.add(filterComboBox);
@@ -579,6 +641,8 @@ public class Panels {
 		infoPanel.add(searchText);
 		infoPanel.add(btnOk);
 		infoPanel.add(scrollPane);
+		if(email.getEmailConnect() == true || facebook.getFacebookConnect() == true || twitter.getTwitterConnect() == true)
+			infoPanel.add(btnRefresh);
 	}
 
 	/**
@@ -593,7 +657,6 @@ public class Panels {
 	 * @param content String with the email's content we selected or we want to
 	 *                send.
 	 */
-
 	public void emailPanel(String from, String subject, String content) {
 
 		JPanel emailPanel = new JPanel();
@@ -628,11 +691,20 @@ public class Panels {
 		emailText.setLineWrap(true);
 		scrollPane.setBounds(30, 173, 542, 176);
 
+		if(!from.equals("")) {
+			sendText.setEditable(false);
+			subjectText.setEditable(false);
+			emailText.setEditable(false);
+		}
+		
 		JButton respondOrSend = null;
 
+		JButton btnBack = new JButton("Back");
+		btnBack.setBounds(475, 386, 95, 40);
+		
 		if (!from.equals("")) {
 			respondOrSend = new JButton("Respond");
-			respondOrSend.setBounds(268, 386, 95, 40);
+			respondOrSend.setBounds(255, 386, 95, 40);
 
 			respondOrSend.addActionListener(new ActionListener() {
 
@@ -641,9 +713,16 @@ public class Panels {
 					emailPanel("", "", "");
 				}
 			});
+			
+			btnBack.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					emailPanel.hide();
+					infoPanel();
+				}
+			});
 		} else {
 			respondOrSend = new JButton("Send");
-			respondOrSend.setBounds(268, 386, 95, 40);
+			respondOrSend.setBounds(255, 386, 95, 40);
 
 			respondOrSend.addActionListener(new ActionListener() {
 
@@ -660,6 +739,13 @@ public class Panels {
 					}
 				}
 			});
+			
+			btnBack.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					emailPanel.hide();
+					startPanel();
+				}
+			});
 		}
 
 		emailPanel.add(getMenuBar(emailPanel));
@@ -669,7 +755,9 @@ public class Panels {
 		emailPanel.add(subjectText);
 		emailPanel.add(emailLabel);
 		emailPanel.add(scrollPane);
-		emailPanel.add(respondOrSend);
+		if(email.getEmailConnect() == true)
+			emailPanel.add(respondOrSend);
+		emailPanel.add(btnBack);
 	}
 
 	/**
@@ -678,7 +766,6 @@ public class Panels {
 	 * 
 	 * @param content String with post content
 	 */
-
 	public void facebookPanel(String content) {
 
 		JPanel facebookPanel = new JPanel();
@@ -727,12 +814,26 @@ public class Panels {
 				infoPanel();
 			}
 		});
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.setBounds(256, 394, 95, 40);
 
+		btnBack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				facebookPanel.hide();
+				infoPanel();
+			}
+		});
+		
 		facebookPanel.add(getMenuBar(facebookPanel));
 		facebookPanel.add(scrollPanePost);
 		facebookPanel.add(btnRespond);
-		facebookPanel.add(scrollPaneRespond);
+		if(facebook.getFacebookConnect() == true)
+			facebookPanel.add(scrollPaneRespond);
 		facebookPanel.add(btnOk);
+		facebookPanel.add(btnBack);
 	}
 
 	/**
@@ -791,11 +892,25 @@ public class Panels {
 			}
 		});
 
+		JButton btnBack = new JButton("Back");
+		btnBack.setBounds(256, 394, 95, 40);
+
+		btnBack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				twitterPanel.hide();
+				infoPanel();
+			}
+		});
+		
 		twitterPanel.add(getMenuBar(twitterPanel));
 		twitterPanel.add(scrollPaneTweet);
 		twitterPanel.add(btnRespond);
-		twitterPanel.add(scrollPaneRespond);
+		if(twitter.getTwitterConnect() == true);
+			twitterPanel.add(scrollPaneRespond);
 		twitterPanel.add(btnOk);
+		twitterPanel.add(btnBack);
 	}
 
 	/**

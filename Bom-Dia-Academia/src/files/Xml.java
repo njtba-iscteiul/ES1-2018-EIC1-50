@@ -1,4 +1,4 @@
-package xml;
+package files;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,8 +43,8 @@ public class Xml {
 	 * @param usernameText Username we want in this app
 	 * @param passwordText password we want in this app
 	 */
-	
-	public static void addRegister(String emailText, String usernameText, String passwordText) {
+	public static void addRegister(String emailText, String usernameText, String passwordText, String emailPasswordText,
+			String consumerKeyText, String consumerSecretText, String acessTokenText, String acessTokenSecretText) {
 		
 		createFile();
 		
@@ -74,9 +74,24 @@ public class Xml {
 		username.appendChild(document.createTextNode(usernameText));
 		Element password = document.createElement("Password");
 		password.appendChild(document.createTextNode(passwordText));
+		Element emailPassword = document.createElement("Email_Password");
+		emailPassword.appendChild(document.createTextNode(emailPasswordText));
+		Element consumerKey = document.createElement("ConsumerKey");
+		consumerKey.appendChild(document.createTextNode(consumerKeyText));
+		Element consumerSecret = document.createElement("ConsumerSecret");
+		consumerSecret.appendChild(document.createTextNode(consumerSecretText));
+		Element acessToken = document.createElement("AcessToken");
+		acessToken.appendChild(document.createTextNode(acessTokenText));
+		Element acessTokenSecret = document.createElement("AcessTokenSecret");
+		acessTokenSecret.appendChild(document.createTextNode(acessTokenSecretText));
 		user.appendChild(email);
 		user.appendChild(username);
 		user.appendChild(password);
+		user.appendChild(emailPassword);
+		user.appendChild(consumerKey);
+		user.appendChild(consumerSecret);
+		user.appendChild(acessToken);
+		user.appendChild(acessTokenSecret);
 		users.appendChild(user);
 		
 		writeFile(document);

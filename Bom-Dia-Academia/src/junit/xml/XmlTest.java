@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
-import xml.Xml;
+import files.Xml;
 
 class XmlTest {
 
@@ -38,7 +38,7 @@ class XmlTest {
 		String username = "Teste";
 		String password = "teste";
 		
-		xml.addRegister(email, username, password);
+		//xml.addRegister(email, username, password);
 	}
 
 	private void addFilters() {

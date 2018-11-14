@@ -9,6 +9,19 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class Twitter {
 	
+	private String consumerKey;
+	private String consumerSecret;
+	private String acessToken;
+	private String acessTokenSecret;
+	private boolean twitterConnect = false;
+	
+	public Twitter(String consumerKey, String consumerSecret, String acessToken, String acessTokenSecret) {
+		this.consumerKey = consumerKey;
+		this.consumerSecret = consumerSecret;
+		this.acessToken = acessToken;
+		this.acessTokenSecret = acessTokenSecret;
+	}
+
 	/**
 	 * 
 	 * Method to search tweets on twitter account with iscte information
@@ -22,10 +35,10 @@ public class Twitter {
 		// https://www.youtube.com/watch?v=uYPmkzMpnxw
 		try {
 			ConfigurationBuilder cb = new ConfigurationBuilder();
-			cb.setDebugEnabled(true).setOAuthConsumerKey("AJ2JHM7lhqmTd3pCPpg2OMwcm")
-					.setOAuthConsumerSecret("6jyKoOZFW2kMJ6C88tGlpeQPol6u1jpGV6t05b7u0H1Ly88daF")
-					.setOAuthAccessToken("1053239130975621121-65AtRgxoOtOEsLWwht2Et3gR30R7iV")
-					.setOAuthAccessTokenSecret("Ty78bOURzyENLedyr2o7klp8dOixrHScR7m2r4JCXykd3");
+			cb.setDebugEnabled(true).setOAuthConsumerKey(consumerKey)
+					.setOAuthConsumerSecret(consumerSecret)
+					.setOAuthAccessToken(acessToken)
+					.setOAuthAccessTokenSecret(acessTokenSecret);
 			TwitterFactory tf = new TwitterFactory(cb.build());
 			twitter4j.Twitter twitter = (twitter4j.Twitter) tf.getInstance();
 			List<Status> statuses = ((TimelinesResources) twitter).getHomeTimeline();
@@ -43,8 +56,13 @@ public class Twitter {
 				counterTotal++;
 			}
 			//System.out.println("-------------\nNº of Results: " + counter + "/" + counterTotal);
+			twitterConnect = true;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			twitterConnect = false;
 		}
+	}
+	
+	public boolean getTwitterConnect() {
+		return twitterConnect;
 	}
 }

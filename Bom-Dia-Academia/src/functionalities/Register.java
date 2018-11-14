@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import xml.Xml;
+import files.Xml;
 
 public class Register {
 	
@@ -24,7 +24,7 @@ public class Register {
 	 */
 
 	public static boolean confirmData(String email, String username, String password, String confirmPassword,
-			String emailPassword, String facebookPassword, String twitterPassword) {
+			String emailPassword, String consumerKey, String consumerSecret, String acessToken, String acessTokenSecret) {
 
 		String email_regex = "^[\\w-\\+]+(\\.[\\w]+)*@iscte-iul.pt";
 
@@ -49,14 +49,23 @@ public class Register {
 						if (emailPassword.equals("")) {
 							JOptionPane.showMessageDialog(null, "Email password missing", "Password", 1);
 						} else {
-							if (facebookPassword.equals("")) {
-								JOptionPane.showMessageDialog(null, "Facebook password missing", "Password", 1);
+							if (consumerKey.equals("")) {
+								JOptionPane.showMessageDialog(null, "Consumer key missing", "Password", 1);
 							} else {
-								if (twitterPassword.equals("")) {
-									JOptionPane.showMessageDialog(null, "Twitter password missing", "Password", 1);
+								if (consumerSecret.equals("")) {
+									JOptionPane.showMessageDialog(null, "Consumer secret missing", "Password", 1);
 								} else {
-									Xml.addRegister(email, username, password);
-									return true;
+									if (acessToken.equals("")) {
+										JOptionPane.showMessageDialog(null, "Acess token missing", "Password", 1);
+									}else {
+										if (acessTokenSecret.equals("")) {
+											JOptionPane.showMessageDialog(null, "Acess token secret missing", "Password", 1);
+										}else {
+											Xml.addRegister(email, username, password, emailPassword, consumerKey, consumerSecret,
+													acessToken, acessTokenSecret);
+											return true;
+										}
+									}
 								}
 							}
 						}

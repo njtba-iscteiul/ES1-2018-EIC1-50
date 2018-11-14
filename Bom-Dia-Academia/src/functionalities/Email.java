@@ -15,6 +15,8 @@ import com.auxilii.msgparser.MsgParser;
 
 public class Email {
 
+	private boolean emailConnect = false;
+	
 	/**
 	 * 
 	 * Method to receive email´s with iscte information from outlook account
@@ -24,7 +26,6 @@ public class Email {
 	 * @param password password for the email
 	 * @param values   array to insert emails
 	 */
-
 	public void receiveEmail(String email, String password, List<String[]> values) {
 		try {
 
@@ -49,17 +50,16 @@ public class Email {
 
 				if (from.contains("iscte")) {
 					values.add(new String[] { message.getReceivedDate().toString(), "Email", from, message.getSubject(),
-							getTextFromMessage(message), "View" });
+							getTextFromMessage(message), "View"});
 					// System.out.println(message.getContent().toString());
 				}
 			}
 
 			inbox.close(false);
 			store.close();
-		} catch (
-
-		Exception e) {
-			e.printStackTrace();
+			emailConnect = true;
+		} catch (Exception e) {
+			emailConnect = false;
 		}
 	}
 
@@ -92,5 +92,9 @@ public class Email {
 			}
 		}
 		return result;
+	}
+	
+	public boolean getEmailConnect() {
+		return emailConnect;
 	}
 }

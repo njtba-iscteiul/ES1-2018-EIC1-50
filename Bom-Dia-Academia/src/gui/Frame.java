@@ -42,7 +42,7 @@ public class Frame {
 
 	public void init() {
 				
-		frame.setSize(375, 265);
+		frame.setSize(375, 320);
 		centerFrame();
 		frame.setVisible(true);
 	}

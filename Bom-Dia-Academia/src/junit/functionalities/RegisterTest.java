@@ -17,15 +17,15 @@ class RegisterTest {
 
 	private void confirmData() {
 		
-		String email = "teste@iscte-iul.pt";
-		String username = "Teste";
-		String password = "teste";
-		String confirmPassword = "teste";
-		String emailPassword = "teste";
-		String facebookPassword = "teste";
-		String twitterPassword = "teste";
-
-		register.confirmData(email, username, password, confirmPassword, emailPassword, facebookPassword, twitterPassword);
+//		String email = "teste@iscte-iul.pt";
+//		String username = "Teste";
+//		String password = "teste";
+//		String confirmPassword = "teste";
+//		String emailPassword = "teste";
+//		String consumerKey = "teste";
+//		String twitterPassword = "teste";
+//
+//		register.confirmData(email, username, password, confirmPassword, emailPassword, facebookPassword, twitterPassword);
 	}
 
 }
