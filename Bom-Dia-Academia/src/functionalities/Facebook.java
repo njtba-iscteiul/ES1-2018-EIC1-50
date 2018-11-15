@@ -6,6 +6,8 @@ import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.FacebookClient.AccessToken;
+import com.restfb.Parameter;
+import com.restfb.types.FacebookType;
 import com.restfb.types.Post;
 import com.restfb.types.User;
 
@@ -69,6 +71,7 @@ public class Facebook {
 //		System.out.println("Expires: " + extendedAccessToken.getExpires());
 
 			Connection<Post> result = fbClient.fetchConnection("me/feed", Post.class);
+
 //		System.out.println("\nPosts:");
 			int counter = 0;
 			int counterTotal = 0;
@@ -93,7 +96,14 @@ public class Facebook {
 		}
 //		System.out.println("-------------\nNº of Results: " + counter + "/" + counterTotal);	
 	}
-	
+
+	public void post(String content) {
+		String accessToken = facebookAcessToken;
+		FacebookClient fbClient = new DefaultFacebookClient(accessToken);
+		
+		fbClient.publish("me/feed", FacebookType.class, Parameter.with("message", content));
+	}
+
 	public boolean getFacebookConnect() {
 		return facebookConnect;
 	}

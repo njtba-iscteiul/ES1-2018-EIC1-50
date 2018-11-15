@@ -47,18 +47,39 @@ public class Twitter {
 			int counterTotal = 0;
 			for (Status status : statuses) {
 				// Filters only tweets from user "catarina"
-				//if (status.getUser().getName() != null && status.getUser().getName().contains("catarina")) {
+				if (status.getUser().getName() != null && (status.getUser().getName().toLowerCase().contains("iscte") 
+						|| status.getText().toLowerCase().contains("iscte"))) {
 					//System.out.println(status.getUser().getName() + ":" + status.getText());
 				values.add(new String[] {status.getCreatedAt().toString(), "Twitter", status.getUser().getName(), "---------",
 						status.getText(), "View"});
 					counter++;
-				//}
+				}
 				counterTotal++;
 			}
 			//System.out.println("-------------\nNº of Results: " + counter + "/" + counterTotal);
 			twitterConnect = true;
 		} catch (Exception e) {
 			twitterConnect = false;
+		}
+	}
+	
+	public void retweet(String content) {
+		
+		try {
+			ConfigurationBuilder cb = new ConfigurationBuilder();
+			cb.setDebugEnabled(true).setOAuthConsumerKey(consumerKey)
+					.setOAuthConsumerSecret(consumerSecret)
+					.setOAuthAccessToken(acessToken)
+					.setOAuthAccessTokenSecret(acessTokenSecret);
+			TwitterFactory tf = new TwitterFactory(cb.build());
+			twitter4j.Twitter twitter = (twitter4j.Twitter) tf.getInstance();
+			//List<Status> statuses = ((TimelinesResources) twitter).getHomeTimeline();
+			//System.out.println("------------------------\n Showing home timeline \n------------------------");
+						
+			twitter.updateStatus(content);
+			
+		} catch (Exception e) {
+			//twitterConnect = false;
 		}
 	}
 	

@@ -724,18 +724,31 @@ public class Panels {
 			respondOrSend = new JButton("Send");
 			respondOrSend.setBounds(255, 386, 95, 40);
 
-			respondOrSend.addActionListener(new ActionListener() {
-
+			respondOrSend.addActionListener(new ActionListener() {				
+				
 				Object[] options = { "Start", "New email" };
 
 				public void actionPerformed(ActionEvent e) {
-					int option = JOptionPane.showOptionDialog(null, "Email successfully sent", "Email",
-							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options,
-							options[1]);
-
-					if (option == 0) {
+					
+					email.sendEmail(sendText.getText(), subjectText.getText(), emailText.getText(), Login.getUserEmail(), Login.getUserPassword());
+					
+					if(email.getSent() == true) {
+						int option = JOptionPane.showOptionDialog(null, "Email successfully sent", "Email",
+								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options,
+								options[1]);
+						
+						if (option == 0) {
+							emailPanel.hide();
+							startPanel();
+						}
+						else {
+							emailPanel.hide();
+							emailPanel("", "", "");
+						}
+					}
+					else {
 						emailPanel.hide();
-						startPanel();
+						emailPanel("", "", "");
 					}
 				}
 			});
@@ -791,25 +804,27 @@ public class Panels {
 		JButton btnRespond = new JButton("Comment");
 		btnRespond.setBounds(256, 179, 95, 40);
 
-		JButton btnOk = new JButton("Ok");
-		btnOk.setBounds(256, 343, 95, 40);
-		btnOk.hide();
+		JButton btnPost = new JButton("Post");
+		btnPost.setBounds(256, 343, 95, 40);
+		btnPost.hide();
 
 		btnRespond.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				scrollPaneRespond.show();
-				btnOk.show();
+				btnPost.show();
 			}
 		});
 
-		btnOk.addActionListener(new ActionListener() {
+		btnPost.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				JOptionPane.showMessageDialog(null, "Tweet successfully sent", "Facebook post", 1);
+				facebook.post(respondTextArea.getText());
+				
+				JOptionPane.showMessageDialog(null, "Post successfully sent", "Facebook post", 1);
 				facebookPanel.hide();
 				infoPanel();
 			}
@@ -832,7 +847,7 @@ public class Panels {
 		facebookPanel.add(btnRespond);
 		if(facebook.getFacebookConnect() == true)
 			facebookPanel.add(scrollPaneRespond);
-		facebookPanel.add(btnOk);
+		facebookPanel.add(btnPost);
 		facebookPanel.add(btnBack);
 	}
 
@@ -865,28 +880,30 @@ public class Panels {
 		scrollPaneRespond.setBounds(89, 230, 429, 102);
 		scrollPaneRespond.hide();
 
-		JButton btnRespond = new JButton("Tweet");
+		JButton btnRespond = new JButton("Retweet");
 		btnRespond.setBounds(256, 179, 95, 40);
 
-		JButton btnOk = new JButton("Ok");
-		btnOk.setBounds(256, 343, 95, 40);
-		btnOk.hide();
+		JButton btnTweet = new JButton("Tweet");
+		btnTweet.setBounds(256, 343, 95, 40);
+		btnTweet.hide();
 
 		btnRespond.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				scrollPaneRespond.show();
-				btnOk.show();
+				btnTweet.show();
 			}
 		});
 
-		btnOk.addActionListener(new ActionListener() {
+		btnTweet.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				JOptionPane.showMessageDialog(null, "Post successfully sent", "Facebook post", 1);
+				twitter.retweet(respondTextArea.getText());
+				
+				JOptionPane.showMessageDialog(null, "Tweet successfully sent", "Facebook post", 1);
 				twitterPanel.hide();
 				infoPanel();
 			}
@@ -909,7 +926,7 @@ public class Panels {
 		twitterPanel.add(btnRespond);
 		if(twitter.getTwitterConnect() == true);
 			twitterPanel.add(scrollPaneRespond);
-		twitterPanel.add(btnOk);
+		twitterPanel.add(btnTweet);
 		twitterPanel.add(btnBack);
 	}
 

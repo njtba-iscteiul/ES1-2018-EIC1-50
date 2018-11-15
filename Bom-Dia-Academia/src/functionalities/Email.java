@@ -7,8 +7,12 @@ import javax.mail.*;
 import javax.mail.Flags.Flag;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.search.FlagTerm;
+import javax.swing.JOptionPane;
+
 import org.jsoup.Jsoup;
 import com.auxilii.msgparser.Message;
 import com.auxilii.msgparser.MsgParser;
@@ -16,6 +20,7 @@ import com.auxilii.msgparser.MsgParser;
 public class Email {
 
 	private boolean emailConnect = false;
+	private boolean sent = false;
 	
 	/**
 	 * 
@@ -94,7 +99,45 @@ public class Email {
 		return result;
 	}
 	
+	public void sendEmail(String sendTo, String subject, String content, String email, String password) {
+		
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp-mail.outlook.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.starttls.enable","true");
+        props.put("mail.smtp.auth", "true");
+
+        Session session = Session.getInstance(props,
+          new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(email, password);
+            }
+          });
+
+        try {
+
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(email));
+            message.setRecipients(RecipientType.TO, InternetAddress.parse(sendTo));
+            message.setSubject(subject);
+            message.setText(content);
+
+            Transport.send(message);
+
+            sent = true;
+
+        } catch (MessagingException e) {
+        	sent = false;
+        	JOptionPane.showMessageDialog(null, "Email not sent, verify if email is correct", "Email", 1);
+        }
+	}
+	
 	public boolean getEmailConnect() {
 		return emailConnect;
 	}
+
+	public boolean getSent() {
+		return sent;
+	}
+
 }
