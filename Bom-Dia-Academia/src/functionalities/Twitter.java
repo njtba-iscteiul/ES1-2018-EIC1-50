@@ -54,6 +54,10 @@ public class Twitter {
 		}
 	}
 	
+	/**
+	 * Method to retweet
+	 * @param content tweet content
+	 */
 	public void retweet(String content) {
 		
 		try {

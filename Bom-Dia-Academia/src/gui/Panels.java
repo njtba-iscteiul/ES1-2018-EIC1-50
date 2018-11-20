@@ -164,8 +164,7 @@ public class Panels {
 
 	/**
 	 * Register panel, in this panel we must choose an email, username and password
-	 * for our app. We must choose a password for the email, facebook and twitter,
-	 * facebook and twitter must have the same email as the one we are registering.
+	 * for our app. We must choose a password for the email and API twitter keys.
 	 */
 	public void registerPanel() {
 
@@ -301,7 +300,6 @@ public class Panels {
 	}
 
 	/**
-	 * 
 	 * App menu bar, this menu has the option to change the panels.
 	 * 
 	 * @param atualPanel panel to hide and insert a new one
@@ -421,6 +419,9 @@ public class Panels {
 
 	/**
 	 * @wbp.parser.entryPoint
+	 */
+	/**
+	 * Connects to facebook, twitter and email and adds info, when successfully connected, to a json file. Sorts the information by date 
 	 */
 	public void doConnections() {
 		
@@ -622,7 +623,6 @@ public class Panels {
 	}
 
 	/**
-	 * 
 	 * Panel to view emails we choose in infoPanel. This panel has the option to
 	 * send emails.
 	 * 
@@ -750,7 +750,6 @@ public class Panels {
 	}
 
 	/**
-	 * 
 	 * Panel to view a post we choose in infoPanel and comment if we want to
 	 * 
 	 * @param content String with post content
@@ -828,7 +827,6 @@ public class Panels {
 	}
 
 	/**
-	 * 
 	 * Panel to view a tweet we choose in infoPanel and retweet if we want to
 	 * 
 	 * @param content String with post content

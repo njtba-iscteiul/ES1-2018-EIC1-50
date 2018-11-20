@@ -63,7 +63,14 @@ public class Email {
 			emailConnect = false;
 		}
 	}
-
+	
+	/**
+	 * Verifies the message type (text, image, html)
+	 * @param message message to verify
+	 * @return message in text
+	 * @throws MessagingException
+	 * @throws IOException
+	 */
 	private String getTextFromMessage(javax.mail.Message message) throws MessagingException, IOException {
 		
 		String result = "";
@@ -76,6 +83,13 @@ public class Email {
 		return result;
 	}
 
+	/**
+	 * When it is not a text message it will remove the html tags
+	 * @param mimeMultipart message in a mimeMultipart format
+	 * @return message in text
+	 * @throws MessagingException
+	 * @throws IOException
+	 */
 	private String getTextFromMimeMultipart(MimeMultipart mimeMultipart) throws MessagingException, IOException {
 		
 		String result = "";
@@ -95,6 +109,14 @@ public class Email {
 		return result;
 	}
 	
+	/**
+	 * Sends an email
+	 * @param sendTo destination user
+	 * @param subject email's subject
+	 * @param content email's content
+	 * @param email sender's email
+	 * @param password sender's email password
+	 */
 	public void sendEmail(String sendTo, String subject, String content, String email, String password) {
 		
         Properties props = new Properties();

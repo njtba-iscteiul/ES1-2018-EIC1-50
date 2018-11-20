@@ -30,6 +30,9 @@ public class Json {
 		this.username = username;
 	}
 
+	/**
+	 * Creates a file with the username
+	 */
 	public static void createFile() {
 		
 		file = new File("./" + username + ".json");
@@ -41,23 +44,28 @@ public class Json {
 		}
 	}
 	
+	/**
+	 * Method to write emails, tweets and facebook posts in a json file
+	 */
 	public static void write() {
 		
 		JSONObject jsonObj = null;
 		
 		JSONArray jsonList = new JSONArray();
 		
-		for (int i = 0; i < values.size(); i++) {
-			
-			jsonObj = new JSONObject();
-			
-			jsonObj.put("Data", values.get(i)[0]);
-			jsonObj.put("Source", values.get(i)[1]);	
-			jsonObj.put("Sender", values.get(i)[2]);
-			jsonObj.put("Subject", values.get(i)[3]);
-			jsonObj.put("Content", values.get(i)[4]);
-			
-			jsonList.add(jsonObj);
+		if(values != null) {
+			for (int i = 0; i < values.size(); i++) {
+				
+				jsonObj = new JSONObject();
+				
+				jsonObj.put("Data", values.get(i)[0]);
+				jsonObj.put("Source", values.get(i)[1]);	
+				jsonObj.put("Sender", values.get(i)[2]);
+				jsonObj.put("Subject", values.get(i)[3]);
+				jsonObj.put("Content", values.get(i)[4]);
+				
+				jsonList.add(jsonObj);
+			}
 		}
 		
 		try (FileWriter fileWriter = new FileWriter(file)) {
@@ -70,7 +78,10 @@ public class Json {
             e.printStackTrace();
         }
 	}
-
+	
+	/**
+	 * Method to insert in an array the last information from the last connection, when an account can't connect
+	 */
 	public static void addToArray() {
 		
         JSONParser parser = new JSONParser();
@@ -79,26 +90,27 @@ public class Json {
 			
 			JSONArray jsonList = (JSONArray) parser.parse(new FileReader(file));
 			
-			for (int i = 0; i < jsonList.size(); i++) {
-				
-				JSONObject jsonObj =  (JSONObject) jsonList.get(i);
-				
-				String data = (String) jsonObj.get("Data");
-				String source = (String) jsonObj.get("Source");
-				String sender = (String) jsonObj.get("Sender");
-				String subject = (String )jsonObj.get("Subject");
-				String content = (String) jsonObj.get("Content");
-				
-				if(emailConnect == false && source.equals("Email")) 
-					values.add(new String[] {data, source, sender, subject,  content, "View"});
-				
-				if(facebookConnect == false && source.equals("Facebook")) 
-					values.add(new String[] {data, source, sender, subject,  content, "View"});
-				
-				if(twitterConnect == false && source.equals("Twitter")) 
-					values.add(new String[] {data, source, sender, subject,  content, "View"});
+			if(!jsonList.isEmpty()) {
+				for (int i = 0; i < jsonList.size(); i++) {
+					
+					JSONObject jsonObj =  (JSONObject) jsonList.get(i);
+					
+					String data = (String) jsonObj.get("Data");
+					String source = (String) jsonObj.get("Source");
+					String sender = (String) jsonObj.get("Sender");
+					String subject = (String )jsonObj.get("Subject");
+					String content = (String) jsonObj.get("Content");
+					
+					if(emailConnect == false && source.equals("Email")) 
+						values.add(new String[] {data, source, sender, subject,  content, "View"});
+					
+					if(facebookConnect == false && source.equals("Facebook")) 
+						values.add(new String[] {data, source, sender, subject,  content, "View"});
+					
+					if(twitterConnect == false && source.equals("Twitter")) 
+						values.add(new String[] {data, source, sender, subject,  content, "View"});
+				}
 			}
-			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

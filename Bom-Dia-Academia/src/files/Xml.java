@@ -33,6 +33,7 @@ public class Xml {
 	private static File f;
 	private static Document document;
 	private final static String PASSWORD = "admin";
+	private static int listLength;
 	
 	/**
 	 * 
@@ -42,9 +43,14 @@ public class Xml {
 	 * @param emailText Email of the app and email, facebook, twitter account
 	 * @param usernameText Username we want in this app
 	 * @param passwordText password we want in this app
+	 * @param emailPasswordText email password
+	 * @param consumerKeyText API Twitter consumer key
+	 * @param consumerSecretText API Twitter consumer secret key
+	 * @param accessTokenText API Twitter access token key
+	 * @param accessTokenSecretText API Twitter access token secret key
 	 */
 	public static void addRegister(String emailText, String usernameText, String passwordText, String emailPasswordText,
-			String consumerKeyText, String consumerSecretText, String acessTokenText, String acessTokenSecretText) {
+			String consumerKeyText, String consumerSecretText, String accessTokenText, String accessTokenSecretText) {
 		
 		createFile();
 		
@@ -57,6 +63,8 @@ public class Xml {
 		NodeList listUsers = document.getElementsByTagName("Users");
 		Element users = null;
 
+		listLength = listUsers.getLength();
+		
 		if(listUsers.getLength() == 0) {
 			users = document.createElement("Users");
 			project.appendChild(users);
@@ -81,9 +89,9 @@ public class Xml {
 		Element consumerSecret = document.createElement("ConsumerSecret");
 		consumerSecret.appendChild(document.createTextNode(consumerSecretText));
 		Element acessToken = document.createElement("AcessToken");
-		acessToken.appendChild(document.createTextNode(acessTokenText));
+		acessToken.appendChild(document.createTextNode(accessTokenText));
 		Element acessTokenSecret = document.createElement("AcessTokenSecret");
-		acessTokenSecret.appendChild(document.createTextNode(acessTokenSecretText));
+		acessTokenSecret.appendChild(document.createTextNode(accessTokenSecretText));
 		user.appendChild(email);
 		user.appendChild(username);
 		user.appendChild(password);
@@ -317,5 +325,9 @@ public class Xml {
 		}
 		
 		return filters;
+	}
+	
+	public int getListLength() {
+		return listLength;
 	}
 }

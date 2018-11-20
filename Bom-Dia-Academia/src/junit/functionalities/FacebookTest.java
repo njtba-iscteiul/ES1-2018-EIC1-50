@@ -11,17 +11,19 @@ import functionalities.Facebook;
 
 class FacebookTest {
 
-//	Facebook facebook = new Facebook();
-//	
-//	@Test
-//	void test() {
-//		viewPosts();
-//	}
-//
-//	private void viewPosts() {
-//		List<String[]> values = new ArrayList<String[]>();
-//		
-//		facebook.viewPosts(values);
-//	}
+	private String facebookAccessToken = "";
+	
+	Facebook facebook = new Facebook(facebookAccessToken);
+	
+	@Test
+	void test() {
+		viewPosts();
+	}
+
+	private void viewPosts() {
+		List<String[]> values = new ArrayList<String[]>();
+		
+		facebook.viewPosts(values);
+	}
 
 }

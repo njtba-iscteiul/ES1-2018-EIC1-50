@@ -38,7 +38,7 @@ public class Facebook {
 			for (List<Post> page : result) {
 				for (Post aPost : page) {
 					if (aPost.getMessage() != null && aPost.getMessage().toLowerCase().contains("iscte")) {
-						values.add(new String[] { aPost.getCreatedTime().toString(), "Facebook", aPost.getAdminCreator().getName(), 
+						values.add(new String[] { aPost.getCreatedTime().toString(), "Facebook", "", 
 								"------------", aPost.getMessage().toString(), "View"});
 					}
 				}

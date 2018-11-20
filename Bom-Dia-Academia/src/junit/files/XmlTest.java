@@ -23,22 +23,29 @@ class XmlTest {
 	@Test
 	void test() {
 		addRegister();
-		addFilters();
-		createFile();
-		createDocument();
-		writeFile();
-		readFile();
-		saveFile();
-		checkPassword();
-		getFilters();
+		if(xml.getListLength() == 0) {
+			addFilters();
+			createFile();
+			createDocument();
+			writeFile();
+			readFile();
+			saveFile();
+			checkPassword();
+			getFilters();
+		}
 	}
 
 	private void addRegister() {
 		String email = "teste@iscte-iul.pt";
 		String username = "Teste";
 		String password = "teste";
+		String emailPassword = "teste";
+		String consumerKey = "teste";
+		String consumerSecret = "teste";
+		String accessToken = "teste";
+		String accessTokenSecret = "teste";
 		
-		//xml.addRegister(email, username, password);
+		xml.addRegister(email, username, password, emailPassword, consumerKey, consumerSecret, accessToken, accessTokenSecret);
 	}
 
 	private void addFilters() {

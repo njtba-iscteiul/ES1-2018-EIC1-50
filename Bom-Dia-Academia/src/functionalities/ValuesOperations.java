@@ -13,6 +13,11 @@ import javax.swing.JComboBox;
 
 public class ValuesOperations {
 
+	/**
+	 * Orders the array by date
+	 * @param values array with tweets, emails and posts
+	 * @return
+	 */
 	public List<String[]> sort(List<String[]> values) {
 
 		Collections.sort(values, new Comparator<String[]>() {
@@ -45,7 +50,14 @@ public class ValuesOperations {
 
 		return values;
 	}
-
+	
+	/**
+	 * Filters the info (you can see only facebook posts, last 24 hours posts)
+	 * @param filterComboBox facebook, twitter, email filter
+	 * @param searchComboBox time filter
+	 * @param values array with information (tweets, emails and posts)
+	 * @param valuesToShow array that we will see with selected filters
+	 */
 	public void filter(JComboBox filterComboBox, JComboBox searchComboBox, List<String[]> values,
 			List<String[]> valuesToShow) {
 
@@ -96,10 +108,15 @@ public class ValuesOperations {
 		}
 	}
 
-	private boolean verifyLastWeek(String string) {
+	/**
+	 * Filters last week information
+	 * @param dateString date in a string format  
+	 * @return returns true if date is within last week
+	 */
+	public boolean verifyLastWeek(String dateString) {
 
 		Date atualDate = new Date();
-		Date date = getFormatDate(string);
+		Date date = getFormatDate(dateString);
 
 		if (atualDate.getMonth() == date.getMonth()) {
 			if (atualDate.getDate() == date.getDate()) 
@@ -117,11 +134,16 @@ public class ValuesOperations {
 		}
 		return false;
 	}
-
-	private boolean verifyLastDay(String string) {
+	
+	/**
+	 * Filters last day information
+	 * @param dateString date in a string format  
+	 * @return returns true if date is within last day
+	 */
+	public boolean verifyLastDay(String dateString) {
 
 		Date atualDate = new Date();
-		Date date = getFormatDate(string);
+		Date date = getFormatDate(dateString);
 
 		if (atualDate.getMonth() == date.getMonth()) {
 			if (atualDate.getDate() == date.getDate())
@@ -137,11 +159,16 @@ public class ValuesOperations {
 		}
 		return false;
 	}
-
-	private boolean verifyLastHour(String string) {
+	
+	/**
+	 * Filters last hour information
+	 * @param dateString date in a string format  
+	 * @return returns true if date is within last hour
+	 */
+	public boolean verifyLastHour(String dateString) {
 
 		Date atualDate = new Date();
-		Date date = getFormatDate(string);
+		Date date = getFormatDate(dateString);
 
 		if (atualDate.getMonth() == date.getMonth()) {
 			if (atualDate.getDate() == date.getDate()) {
@@ -157,12 +184,19 @@ public class ValuesOperations {
 		}
 		return false;
 	}
+	
+	/**
+	 * Changes from string format to date format
+	 * @param dateString date in a string format
+	 * @return date
+	 */
+	public Date getFormatDate(String dateString) {
 
-	private Date getFormatDate(String string) {
-
+		System.out.println(dateString);
+		
 		DateFormat dateFormat = new SimpleDateFormat("MMM dd HH:mm:ss zzz yyyy", new Locale("en"));
 
-		String[] tokens = string.split(" ");
+		String[] tokens = dateString.split(" ");
 
 		String dateToFormat = tokens[1] + " " + tokens[2] + " " + tokens[3] + " " + tokens[4] + " " + tokens[5];
 

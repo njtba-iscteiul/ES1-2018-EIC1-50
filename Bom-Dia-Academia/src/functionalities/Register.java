@@ -18,12 +18,14 @@ public class Register {
 	 * @param password password we want in the app
 	 * @param confirmPassword confirm password of the app
 	 * @param emailPassword email password that we want to use in this account
-	 * @param facebookPassword facebook password that we want to use in this account
-	 * @param twitterPassword twitter password that we want to use in this account
+	 * @param consumerKey API Twitter consumer key
+	 * @param consumerSecret API Twitter consumer secret key
+	 * @param accessToken API Twitter access token key
+	 * @param accessTokenSecret API Twitter access token secret key
 	 * @return returns true if all data is valid and returns false if something is invalid
 	 */
 	public static boolean confirmData(String email, String username, String password, String confirmPassword,
-			String emailPassword, String consumerKey, String consumerSecret, String acessToken, String acessTokenSecret) {
+			String emailPassword, String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
 
 		String email_regex = "^[\\w-\\+]+(\\.[\\w]+)*@iscte-iul.pt";
 
@@ -48,19 +50,19 @@ public class Register {
 							JOptionPane.showMessageDialog(null, "Email password missing", "Password", 1);
 						} else {
 							if (consumerKey.equals("")) {
-								JOptionPane.showMessageDialog(null, "Consumer key missing", "Password", 1);
+								JOptionPane.showMessageDialog(null, "Consumer key missing", "Consumer Key", 1);
 							} else {
 								if (consumerSecret.equals("")) {
-									JOptionPane.showMessageDialog(null, "Consumer secret missing", "Password", 1);
+									JOptionPane.showMessageDialog(null, "Consumer secret missing", "Consumer Secret", 1);
 								} else {
-									if (acessToken.equals("")) {
-										JOptionPane.showMessageDialog(null, "Acess token missing", "Password", 1);
+									if (accessToken.equals("")) {
+										JOptionPane.showMessageDialog(null, "Access token missing", "Access token", 1);
 									}else {
-										if (acessTokenSecret.equals("")) {
-											JOptionPane.showMessageDialog(null, "Acess token secret missing", "Password", 1);
+										if (accessTokenSecret.equals("")) {
+											JOptionPane.showMessageDialog(null, "Access token secret missing", "Access Token Secret", 1);
 										}else {
 											Xml.addRegister(email, username, password, emailPassword, consumerKey, consumerSecret,
-													acessToken, acessTokenSecret);
+													accessToken, accessTokenSecret);
 											return true;
 										}
 									}
