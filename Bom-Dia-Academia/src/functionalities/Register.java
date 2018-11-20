@@ -22,7 +22,6 @@ public class Register {
 	 * @param twitterPassword twitter password that we want to use in this account
 	 * @return returns true if all data is valid and returns false if something is invalid
 	 */
-
 	public static boolean confirmData(String email, String username, String password, String confirmPassword,
 			String emailPassword, String consumerKey, String consumerSecret, String acessToken, String acessTokenSecret) {
 
@@ -35,7 +34,6 @@ public class Register {
 		if (email.equals("") || matcher.matches() == false) {
 			JOptionPane.showMessageDialog(null, "Email incorrect or missing", "Email", 1);
 		} else {
-
 			if (username.equals("")) {
 				JOptionPane.showMessageDialog(null, "Username missing", "Username", 1);
 			} else {

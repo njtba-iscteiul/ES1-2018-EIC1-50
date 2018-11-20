@@ -1,4 +1,4 @@
-package junit.xml;
+package junit.files;
 
 import static org.junit.jupiter.api.Assertions.*;
 

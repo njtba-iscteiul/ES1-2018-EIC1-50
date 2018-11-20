@@ -102,7 +102,6 @@ public class Xml {
 	/**
 	 * Method to add filters for our information (email, facebook, twitter)
 	 */
-	
 	public static void addFilters() {
 		
 		Element project = document.createElement("Project");
@@ -121,7 +120,6 @@ public class Xml {
 		facebookFilter.appendChild(document.createTextNode("Facebook"));
 		Element twitterFilter = document.createElement("Filter");
 		twitterFilter.appendChild(document.createTextNode("Twitter"));
-
 		filters.appendChild(allFilter);
 		filters.appendChild(emailFilter);
 		filters.appendChild(facebookFilter);
@@ -133,7 +131,6 @@ public class Xml {
 	/**
 	 * Method to create the xml file
 	 */
-	
 	public static void createFile() {
 		
 		f = new File("./config.xml");
@@ -154,7 +151,6 @@ public class Xml {
 	 * 
 	 * @return a document that will be used to insert register data or filters
 	 */
-	
 	public static Document createDocument() {
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -184,7 +180,6 @@ public class Xml {
 	 * 
 	 * @param document document with data to write.
 	 */
-	
 	public static void writeFile(Document document) {
 		
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -215,7 +210,6 @@ public class Xml {
 	 * 
 	 * @param textArea frame textArea so the user sees the content of xml file
 	 */
-	
 	public static void readFile(JTextArea textArea) {
 		
 		FileReader fileReader = null;
@@ -256,7 +250,6 @@ public class Xml {
 	 * 
 	 * @param textArea frame textArea where the user makes changes.
 	 */
-
 	public static void saveFile(JTextArea textArea) {
 		
 		String xmlText = textArea.getText();
@@ -284,7 +277,6 @@ public class Xml {
 	 * 
 	 * @param atualPanel panel to return if we want to cancel the view of xml file
 	 */
-	
 	public static void checkPassword(JPanel atualPanel) {
 			
 		JPasswordField pwd = new JPasswordField(10);
@@ -309,7 +301,6 @@ public class Xml {
 	 * 
 	 * @return array with the filters
 	 */
-	
 	public static String[] getFilters() {
 		
 		createFile();

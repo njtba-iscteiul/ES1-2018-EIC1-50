@@ -71,7 +71,7 @@ public class Json {
         }
 	}
 
-	public static void add() {
+	public static void addToArray() {
 		
         JSONParser parser = new JSONParser();
 
@@ -89,27 +89,21 @@ public class Json {
 				String subject = (String )jsonObj.get("Subject");
 				String content = (String) jsonObj.get("Content");
 				
-				if(emailConnect == false && source.equals("Email")) {
+				if(emailConnect == false && source.equals("Email")) 
 					values.add(new String[] {data, source, sender, subject,  content, "View"});
-				}
 				
-				if(facebookConnect == false && source.equals("Facebook")) {
+				if(facebookConnect == false && source.equals("Facebook")) 
 					values.add(new String[] {data, source, sender, subject,  content, "View"});
-				}
 				
-				if(twitterConnect == false && source.equals("Twitter")) {
+				if(twitterConnect == false && source.equals("Twitter")) 
 					values.add(new String[] {data, source, sender, subject,  content, "View"});
-				}
-
 			}
+			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			//e.printStackTrace();
 		}
     }

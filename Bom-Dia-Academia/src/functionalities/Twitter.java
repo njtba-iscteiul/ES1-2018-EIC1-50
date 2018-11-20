@@ -28,11 +28,8 @@ public class Twitter {
 	 * 	
 	 * @param values array to insert tweets
 	 */
-
 	public void viewTweets(List<String[]> values) {
-		// http://twitter4j.org
-		// http://twitter4j.org/en/code-examples.html
-		// https://www.youtube.com/watch?v=uYPmkzMpnxw
+
 		try {
 			ConfigurationBuilder cb = new ConfigurationBuilder();
 			cb.setDebugEnabled(true).setOAuthConsumerKey(consumerKey)
@@ -42,21 +39,15 @@ public class Twitter {
 			TwitterFactory tf = new TwitterFactory(cb.build());
 			twitter4j.Twitter twitter = (twitter4j.Twitter) tf.getInstance();
 			List<Status> statuses = ((TimelinesResources) twitter).getHomeTimeline();
-			//System.out.println("------------------------\n Showing home timeline \n------------------------");
-			int counter = 0;
-			int counterTotal = 0;
+
 			for (Status status : statuses) {
-				// Filters only tweets from user "catarina"
+
 				if (status.getUser().getName() != null && (status.getUser().getName().toLowerCase().contains("iscte") 
-						|| status.getText().toLowerCase().contains("iscte"))) {
-					//System.out.println(status.getUser().getName() + ":" + status.getText());
+						|| status.getText().toLowerCase().contains("iscte"))) 
 				values.add(new String[] {status.getCreatedAt().toString(), "Twitter", status.getUser().getName(), "---------",
 						status.getText(), "View"});
-					counter++;
-				}
-				counterTotal++;
 			}
-			//System.out.println("-------------\nNº of Results: " + counter + "/" + counterTotal);
+
 			twitterConnect = true;
 		} catch (Exception e) {
 			twitterConnect = false;
@@ -73,13 +64,11 @@ public class Twitter {
 					.setOAuthAccessTokenSecret(acessTokenSecret);
 			TwitterFactory tf = new TwitterFactory(cb.build());
 			twitter4j.Twitter twitter = (twitter4j.Twitter) tf.getInstance();
-			//List<Status> statuses = ((TimelinesResources) twitter).getHomeTimeline();
-			//System.out.println("------------------------\n Showing home timeline \n------------------------");
 						
 			twitter.updateStatus(content);
 			
 		} catch (Exception e) {
-			//twitterConnect = false;
+			//e.printStackTrace();
 		}
 	}
 	

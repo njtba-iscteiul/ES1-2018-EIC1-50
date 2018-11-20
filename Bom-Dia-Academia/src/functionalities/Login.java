@@ -9,6 +9,13 @@ import files.Xml;
 
 public class Login {
 	
+	private static String userEmail;
+	private static String userPassword;
+	private static String consumerKey;
+	private static String consumerSecret;
+	private static String acessToken;
+	private static String acessTokenSecret;
+	
 	/**
 	 * 
 	 * Method to sign in, confirms user in config.xml file if that user exists the login is successful.
@@ -17,14 +24,6 @@ public class Login {
 	 * @param password account password of username
 	 * @return
 	 */
-	
-	private static String userEmail;
-	private static String userPassword;
-	private static String consumerKey;
-	private static String consumerSecret;
-	private static String acessToken;
-	private static String acessTokenSecret;
-	
 	public static boolean login(String usernameText, String passwordText) {
 		
 		Xml.createFile();

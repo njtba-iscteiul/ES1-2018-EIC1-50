@@ -41,23 +41,19 @@ public class Email {
 			store.connect("imap-mail.outlook.com", 993, email, password);
 
 			Folder inbox = store.getFolder("Inbox");
-			// System.out.println("No of Unread Messages : " +
-			// inbox.getUnreadMessageCount());
+
 			inbox.open(Folder.READ_ONLY);
 
-			/* Get the messages which is unread in the Inbox */
-			javax.mail.Message[] messages = inbox.getMessages(); // search(new FlagTerm(new Flags(Flag.SEEN), false));
+			javax.mail.Message[] messages = inbox.getMessages();
 
 			for (int i = messages.length - 25; i < messages.length; i++) {
 				javax.mail.Message message = messages[i];
 				Address[] froms = message.getFrom();
 				String from = ((InternetAddress) froms[0]).getAddress();
 
-				if (from.contains("iscte")) {
+				if (from.toLowerCase().contains("iscte") || message.getSubject().toLowerCase().contains("iscte")) 
 					values.add(new String[] { message.getReceivedDate().toString(), "Email", from, message.getSubject(),
 							getTextFromMessage(message), "View"});
-					// System.out.println(message.getContent().toString());
-				}
 			}
 
 			inbox.close(false);
@@ -88,7 +84,7 @@ public class Email {
 			BodyPart bodyPart = mimeMultipart.getBodyPart(i);
 			if (bodyPart.isMimeType("text/plain")) {
 				result = result + "\n" + bodyPart.getContent();
-				break; // without break same text appears twice in my tests
+				break;
 			} else if (bodyPart.isMimeType("text/html")) {
 				String html = (String) bodyPart.getContent();
 				result = result + "\n" + org.jsoup.Jsoup.parse(html).text();

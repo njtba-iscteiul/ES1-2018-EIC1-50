@@ -14,7 +14,6 @@ public class Frame {
 	/**
 	 * App frame
 	 */
-	
 	public Frame() {
 		
 		frame = new JFrame("Bom Dia Academia");
@@ -30,7 +29,6 @@ public class Frame {
 	/**
 	 * Calls the first panel (Login panel)
 	 */
-	
 	private void addComponents() {
 		
 		panels.loginPanel();
@@ -39,7 +37,6 @@ public class Frame {
 	/**
 	 * Initializes the frame 
 	 */
-
 	public void init() {
 				
 		frame.setSize(375, 320);
@@ -50,7 +47,6 @@ public class Frame {
 	/**
 	 * App center frame
 	 */
-	
 	private void centerFrame() {
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

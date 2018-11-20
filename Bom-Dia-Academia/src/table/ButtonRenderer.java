@@ -19,5 +19,4 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
 		setText((obj==null) ? "":obj.toString()); 
 		return this;
 	}
-
 }

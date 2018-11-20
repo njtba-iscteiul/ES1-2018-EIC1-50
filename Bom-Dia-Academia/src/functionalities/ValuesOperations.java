@@ -30,6 +30,7 @@ public class ValuesOperations {
 
 				Date date1 = null;
 				Date date2 = null;
+				
 				try {
 					date1 = dateFormat.parse(dateToFormat1);
 					date2 = dateFormat.parse(dateToFormat2);
@@ -101,22 +102,16 @@ public class ValuesOperations {
 		Date date = getFormatDate(string);
 
 		if (atualDate.getMonth() == date.getMonth()) {
-			if (atualDate.getDate() == date.getDate()) {
+			if (atualDate.getDate() == date.getDate()) 
 				return true;
-			}
-
-			if (atualDate.getDate() - 7 < date.getDate()) {
+			if (atualDate.getDate() - 7 < date.getDate()) 
 				return true;
-			}
-
 			if (atualDate.getDate() - 7 == date.getDate()) {
-				if (atualDate.getHours() < date.getHours()) {
+				if (atualDate.getHours() < date.getHours()) 
 					return true;
-				}
 				if (atualDate.getHours() == date.getHours()) {
-					if (atualDate.getMinutes() <= date.getMinutes()) {
+					if (atualDate.getMinutes() <= date.getMinutes()) 
 						return true;
-					}
 				}
 			}
 		}
@@ -129,17 +124,14 @@ public class ValuesOperations {
 		Date date = getFormatDate(string);
 
 		if (atualDate.getMonth() == date.getMonth()) {
-			if (atualDate.getDate() == date.getDate()) {
+			if (atualDate.getDate() == date.getDate())
 				return true;
-			}
 			if (atualDate.getDate() - 1 == date.getDate()) {
-				if (atualDate.getHours() < date.getHours()) {
+				if (atualDate.getHours() < date.getHours())
 					return true;
-				}
 				if (atualDate.getHours() == date.getHours()) {
-					if (atualDate.getMinutes() <= date.getMinutes()) {
+					if (atualDate.getMinutes() <= date.getMinutes())
 						return true;
-					}
 				}
 			}
 		}
@@ -154,14 +146,12 @@ public class ValuesOperations {
 		if (atualDate.getMonth() == date.getMonth()) {
 			if (atualDate.getDate() == date.getDate()) {
 				if (atualDate.getHours() - 1 < date.getHours()) {
-					if (atualDate.getMinutes() > date.getMinutes()) {
+					if (atualDate.getMinutes() > date.getMinutes())
 						return true;
-					}
 				}
 				if (atualDate.getHours() - 1 == date.getHours()) {
-					if (atualDate.getMinutes() < date.getMinutes()) {
+					if (atualDate.getMinutes() < date.getMinutes())
 						return true;
-					}
 				}
 			}
 		}
