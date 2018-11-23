@@ -177,7 +177,7 @@ public class Panels {
 
 		registerPanel.setLayout(null);
 
-		JLabel bomDiaAcademiaAccount = new JLabel("Bom dia academia account:");
+		JLabel bomDiaAcademiaAccount = new JLabel("Bom dia academia account: ");
 		bomDiaAcademiaAccount.setFont(new Font("Tahoma", Font.BOLD, 11));
 		bomDiaAcademiaAccount.setBounds(31, 26, 185, 21);
 
