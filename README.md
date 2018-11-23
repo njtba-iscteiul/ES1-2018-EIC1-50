@@ -3,11 +3,11 @@
 Nelson Braga 54428
 Cláudio Monteiro 64936
 
-link youtube
+https://youtu.be/MloEQQicJis
 
 Erros da aplicação:
 
--Os paineis da aplicação por vezes podem falhar, terá que ser necessário clicar algumas vezes para o painel aparecer por completo caso isso ocorra.
+-Os paineis da aplicação por vezes podem falhar, terá que ser necessário clicar algumas vezes para o painel aparecer por completo caso isso ocorra. Informação começa a duplicar a cada login.
 
 Funcionalidades incompletas:
 
