@@ -14,6 +14,7 @@ class ValuesOperationsTest {
 	void test() {
 		sort();
 		filter();
+		contains();
 		verifyLastWeek();
 		verifyLastDay();
 		verifyLastHour();
@@ -26,6 +27,11 @@ class ValuesOperationsTest {
 
 	private void filter() {
 //		values.filter();
+	}
+	
+	private void contains() {
+		String[] test = new String[] {"abc", "abc", "teste", "abc", "abc"};
+		values.contains("teste", test);
 	}
 	
 	private void verifyLastWeek() {

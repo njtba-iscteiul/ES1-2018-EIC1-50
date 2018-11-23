@@ -33,12 +33,12 @@ public class Facebook {
 			String accessToken = facebookAccessToken;
 			FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 		
-			Connection<Post> result = fbClient.fetchConnection("me/feed", Post.class);
-			
+			Connection<Post> result = fbClient.fetchConnection("me/feed", Post.class, Parameter.with("fields", "from,message,created_time"));
+
 			for (List<Post> page : result) {
 				for (Post aPost : page) {
 					if (aPost.getMessage() != null && aPost.getMessage().toLowerCase().contains("iscte")) {
-						values.add(new String[] { aPost.getCreatedTime().toString(), "Facebook", "", 
+						values.add(new String[] { aPost.getCreatedTime().toString(), "Facebook", aPost.getFrom().getName(), 
 								"------------", aPost.getMessage().toString(), "View"});
 					}
 				}

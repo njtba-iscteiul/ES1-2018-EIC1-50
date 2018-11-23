@@ -16,6 +16,8 @@ class EmailTest {
 	@Test
 	void test() {
 		receiveEmail();
+		getEmailConnect();
+		getSent();
 	}
 
 	private void receiveEmail() {
@@ -25,5 +27,13 @@ class EmailTest {
 		List<String[]> values = new ArrayList<String[]>();
 		
 		e.receiveEmail(email, password, values);
+	}
+	
+	private void getEmailConnect() {
+		assertEquals(false, e.getEmailConnect());
+	}
+	
+	private void getSent() {
+		assertEquals(false, e.getSent());
 	}
 }

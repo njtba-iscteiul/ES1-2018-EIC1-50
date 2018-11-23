@@ -12,7 +12,7 @@ import files.Json;
 class JsonTest {
 	
 	private static File file;
-	private static String username = "teste";
+	private static String username = "Nelson";
 	private static List<String[]> values = null;
 	private static boolean emailConnect = true;
 	private static boolean facebookConnect = true;

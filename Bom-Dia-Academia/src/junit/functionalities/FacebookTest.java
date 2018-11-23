@@ -18,6 +18,7 @@ class FacebookTest {
 	@Test
 	void test() {
 		viewPosts();
+		getFacebookConnect();
 	}
 
 	private void viewPosts() {
@@ -26,4 +27,7 @@ class FacebookTest {
 		facebook.viewPosts(values);
 	}
 
+	private void getFacebookConnect() {
+		assertEquals(false, facebook.getFacebookConnect());
+	}
 }

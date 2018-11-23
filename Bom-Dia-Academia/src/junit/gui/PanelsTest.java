@@ -29,7 +29,7 @@ class PanelsTest {
 	private JComboBox filterComboBox = new JComboBox(Xml.getFilters());
 	private JComboBox searchComboBox = new JComboBox(new String[] { "All time", "Last hour", "Last 24 hours", "Last week" });
 	private JPasswordField facebookAccessToken;
-	private Email email;
+	private Email email = new Email();
 	private Facebook facebook;
 	private Twitter twitter;
 	private ValuesOperations valuesOperations = new ValuesOperations();
@@ -40,7 +40,7 @@ class PanelsTest {
 	void test() {
 		loginPanel();
 		registerPanel();
-//		getMenuBar();
+		getMenuBar();
 		startPanel();
 		infoPanel();
 		emailPanel();

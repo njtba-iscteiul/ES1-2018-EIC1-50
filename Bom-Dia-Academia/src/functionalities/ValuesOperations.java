@@ -55,28 +55,36 @@ public class ValuesOperations {
 	 * Filters the info (you can see only facebook posts, last 24 hours posts)
 	 * @param filterComboBox facebook, twitter, email filter
 	 * @param searchComboBox time filter
+	 * @param search 
 	 * @param values array with information (tweets, emails and posts)
 	 * @param valuesToShow array that we will see with selected filters
 	 */
-	public void filter(JComboBox filterComboBox, JComboBox searchComboBox, List<String[]> values,
+	public void filter(JComboBox filterComboBox, JComboBox searchComboBox, String search, List<String[]> values,
 			List<String[]> valuesToShow) {
 
 		if (filterComboBox.getSelectedItem().equals("All")) {
 			for (int i = 0; i < values.size(); i++) {
 				if (searchComboBox.getSelectedItem().equals("All time")) {
-					valuesToShow.add(values.get(i));
+					if(contains(search, values.get(i)))
+						valuesToShow.add(values.get(i));
 				} else {
 					if (searchComboBox.getSelectedItem().equals("Last hour")) {
-						if (verifyLastHour(values.get(i)[0]))
-							valuesToShow.add(values.get(i));
+						if (verifyLastHour(values.get(i)[0])) {
+							if(contains(search, values.get(i)))
+								valuesToShow.add(values.get(i));
+						}
 					} else {
 						if (searchComboBox.getSelectedItem().equals("Last 24 hours")) {
-							if (verifyLastDay(values.get(i)[0]))
-								valuesToShow.add(values.get(i));
+							if (verifyLastDay(values.get(i)[0])) {
+								if(contains(search, values.get(i)))
+									valuesToShow.add(values.get(i));
+							}
 						} else {
 							if (searchComboBox.getSelectedItem().equals("Last week")) {
-								if (verifyLastWeek(values.get(i)[0]))
-									valuesToShow.add(values.get(i));
+								if (verifyLastWeek(values.get(i)[0])) {
+									if(contains(search, values.get(i)))
+										valuesToShow.add(values.get(i));
+								}
 							}
 						}
 					}
@@ -86,19 +94,26 @@ public class ValuesOperations {
 			for (int i = 0; i < values.size(); i++) {
 				if (values.get(i)[1].equals(filterComboBox.getSelectedItem())) {
 					if (searchComboBox.getSelectedItem().equals("All time")) {
-						valuesToShow.add(values.get(i));
+						if(contains(search, values.get(i)))
+							valuesToShow.add(values.get(i));
 					} else {
 						if (searchComboBox.getSelectedItem().equals("Last hour")) {
-							if (verifyLastHour(values.get(i)[0]))
-								valuesToShow.add(values.get(i));
+							if (verifyLastHour(values.get(i)[0])) {
+								if(contains(search, values.get(i)))
+									valuesToShow.add(values.get(i));
+							}
 						} else {
 							if (searchComboBox.getSelectedItem().equals("Last 24 hours")) {
-								if (verifyLastDay(values.get(i)[0]))
-									valuesToShow.add(values.get(i));
+								if (verifyLastDay(values.get(i)[0])) {
+									if(contains(search, values.get(i)))
+										valuesToShow.add(values.get(i));
+								}
 							} else {
 								if (searchComboBox.getSelectedItem().equals("Last week")) {
-									if (verifyLastWeek(values.get(i)[0]))
-										valuesToShow.add(values.get(i));
+									if (verifyLastWeek(values.get(i)[0])) {
+										if(contains(search, values.get(i)))
+											valuesToShow.add(values.get(i));
+									}
 								}
 							}
 						}
@@ -106,6 +121,18 @@ public class ValuesOperations {
 				}
 			}
 		}
+	}
+
+	public boolean contains(String search, String[] value) {
+		
+		if(value[2].toLowerCase().contains(search.toLowerCase()) ||
+			value[3].toLowerCase().contains(search.toLowerCase()) ||
+				value[4].toLowerCase().contains(search.toLowerCase())) {
+			
+			return true;
+		}
+		
+		return false;
 	}
 
 	/**
@@ -192,8 +219,6 @@ public class ValuesOperations {
 	 */
 	public Date getFormatDate(String dateString) {
 
-		System.out.println(dateString);
-		
 		DateFormat dateFormat = new SimpleDateFormat("MMM dd HH:mm:ss zzz yyyy", new Locale("en"));
 
 		String[] tokens = dateString.split(" ");

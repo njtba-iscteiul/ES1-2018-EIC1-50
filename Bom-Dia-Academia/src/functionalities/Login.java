@@ -13,11 +13,10 @@ public class Login {
 	private static String userPassword;
 	private static String consumerKey;
 	private static String consumerSecret;
-	private static String acessToken;
-	private static String acessTokenSecret;
+	private static String accessToken;
+	private static String accessTokenSecret;
 	
 	/**
-	 * 
 	 * Method to sign in, confirms user in config.xml file if that user exists the login is successful.
 	 * 
 	 * @param username username we want to login
@@ -44,13 +43,13 @@ public class Login {
 					NodeList passwordList = document.getElementsByTagName("Password");
 
 					if (passwordList.item(i).getTextContent().equals(passwordText)) {
-						JOptionPane.showMessageDialog(null, "Sucessful login! \nDoing connections wait please...", "Login", 1);
+						JOptionPane.showMessageDialog(null, "Successful login! \nClick ok and wait until the \nconnections are established!", "Login", 1);
 						userEmail = document.getElementsByTagName("Email").item(i).getTextContent();
 						userPassword = document.getElementsByTagName("Email_Password").item(i).getTextContent();
 						consumerKey = document.getElementsByTagName("ConsumerKey").item(i).getTextContent();
 						consumerSecret = document.getElementsByTagName("ConsumerSecret").item(i).getTextContent();
-						acessToken = document.getElementsByTagName("AcessToken").item(i).getTextContent();
-						acessTokenSecret = document.getElementsByTagName("AcessTokenSecret").item(i).getTextContent();
+						accessToken = document.getElementsByTagName("AcessToken").item(i).getTextContent();
+						accessTokenSecret = document.getElementsByTagName("AcessTokenSecret").item(i).getTextContent();
 						return true;
 					} else {
 						JOptionPane.showMessageDialog(null, "Password incorrect", "Login", 1);
@@ -82,10 +81,10 @@ public class Login {
 	}
 	
 	public static String getAcessToken() {
-		return acessToken;
+		return accessToken;
 	}
 	
 	public static String getAcessTokenSecret() {
-		return acessTokenSecret;
+		return accessTokenSecret;
 	}
 }

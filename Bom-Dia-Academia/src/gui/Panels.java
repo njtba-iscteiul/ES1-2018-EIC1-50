@@ -67,6 +67,7 @@ public class Panels {
 	private List<String[]> valuesToShow = new ArrayList<String[]>();
 	private JComboBox filterComboBox = new JComboBox(Xml.getFilters());
 	private JComboBox searchComboBox = new JComboBox(new String[] { "All time", "Last hour", "Last 24 hours", "Last week" });
+	private JTextField searchText = new JTextField();
 	private JPasswordField facebookAccessToken;
 	private Email email;
 	private Facebook facebook;
@@ -82,6 +83,9 @@ public class Panels {
 		this.frame = frame;
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	/**
 	 * First app panel, in this panel we can login or register a new account
 	 */
@@ -108,7 +112,7 @@ public class Panels {
 
 		JButton login = new JButton("Login");
 		login.setBounds(66, 217, 95, 40);
-
+		
 		login.addActionListener(new ActionListener() {
 
 			@Override
@@ -337,7 +341,7 @@ public class Panels {
 				infoPanel();
 			}
 		});
-
+		
 		menuItemLogout.addActionListener(new ActionListener() {
 
 			@Override
@@ -417,9 +421,6 @@ public class Panels {
 		return menuBar;
 	}
 
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	/**
 	 * Connects to facebook, twitter and email and adds info, when successfully connected, to a json file. Sorts the information by date 
 	 */
@@ -529,12 +530,24 @@ public class Panels {
 
 		searchComboBox.setBounds(253, 32, 95, 20);
 
-		JTextField searchText = new JTextField();
 		searchText.setBounds(368, 32, 162, 20);
 
 		JButton btnOk = new JButton("Ok");
 		btnOk.setBounds(540, 31, 53, 22);
 
+		btnOk.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				valuesToShow.clear();
+				searchText.setText(searchText.getText());
+				valuesOperations.filter(filterComboBox, searchComboBox, searchText.getText(), values, valuesToShow);
+				infoPanel.hide();
+				infoPanel();
+			}
+		});
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -556,7 +569,7 @@ public class Panels {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				valuesToShow.clear();
-				valuesOperations.filter(filterComboBox, searchComboBox, values, valuesToShow);
+				valuesOperations.filter(filterComboBox, searchComboBox, searchText.getText(), values, valuesToShow);
 				infoPanel.hide();
 				infoPanel();
 			}
@@ -567,7 +580,7 @@ public class Panels {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				valuesToShow.clear();
-				valuesOperations.filter(filterComboBox, searchComboBox, values, valuesToShow);
+				valuesOperations.filter(filterComboBox, searchComboBox, searchText.getText(), values, valuesToShow);
 				infoPanel.hide();
 				infoPanel();
 			}

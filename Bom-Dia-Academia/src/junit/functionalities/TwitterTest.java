@@ -16,6 +16,7 @@ class TwitterTest {
 	@Test
 	void test() {
 		viewTweets();
+		getTwitterConnect();
 	}
 
 	private void viewTweets() {
@@ -24,4 +25,7 @@ class TwitterTest {
 		twitter.viewTweets(values);
 	}
 
+	private void getTwitterConnect() {
+		assertEquals(false, twitter.getTwitterConnect());
+	}
 }
