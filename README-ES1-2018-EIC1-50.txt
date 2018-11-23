@@ -1,17 +1,17 @@
-Ao iniciar a aplicaÁ„o atravÈs do jar ter· que ser efetuado um registo na aplicaÁ„o, caso n„o tenha sido efetuado um registo anteriormente. 
+Ao iniciar a aplica√ß√£o atrav√©s do jar ter√° que ser efetuado um registo na aplica√ß√£o, caso n√£o tenha sido efetuado um registo anteriormente. 
 
-No registo ter· que ser inserido o email pelo qual queremos consultar os emails do iscte, um username, uma password, password do email inserido anteriomente e para termos acesso a conta twitter teremos que inserir as keys e tokens da API do twitter.
+No registo ter√° que ser inserido o email pelo qual queremos consultar os emails do iscte, um username, uma password, password do email inserido anteriomente e para termos acesso a conta twitter teremos que inserir as keys e tokens da API do twitter.
 
-O registo ao ser bem sucessido caso seja o primeiro registo ser· criado o ficheiro config.xml que ter· os filtros para consulta da informaÁ„o obtida e os dados do registo efetuado.
+O registo ao ser bem sucessido caso seja o primeiro registo ser√° criado o ficheiro config.xml que ter√° os filtros para consulta da informa√ß√£o obtida e os dados do registo efetuado.
 
-ApÛs o registo ser· possivel efetuar login atravÈs do username e password inseridos no registo mais o token para aceder a API do facebook que neste caso ser· sempre necessario inserir a cada login uma vez que expira num curto periodo de tempo.
+Ap√≥s o registo ser√° possivel efetuar login atrav√©s do username e password inseridos no registo mais o token para aceder a API do facebook que neste caso ser√° sempre necessario inserir a cada login uma vez que expira num curto periodo de tempo.
 
-O login ao ser bem sucessido a aplicaÁ„o vai efetuar as conexıes necessarias que pudera demorar algum tempo dependendo se consegue efetuar todas as conexıes, algumas ou nenhuma. 
+O login ao ser bem sucessido a aplica√ß√£o vai efetuar as conex√µes necessarias que pudera demorar algum tempo dependendo se consegue efetuar todas as conex√µes, algumas ou nenhuma. 
 
-Assim que seja feito o login e as conexıes concluidas iremos para o painel inicial ao qual conseguimos ver os dados do utilizador logado e se conseguiu efetuar ou nao todas as conexıes. Ir· ser criado um ficheiro "username".json com a informaÁ„o obtida pelas conexıes que foram bem sucessidas. Caso nao consigamos no proximo login aceder quer seja ao email, twitter ou facebook ser· a este ficheiro que ser· carregado as informaÁıes do ultimo login efetuado em que essas conexıes foram conseguidas.
+Assim que seja feito o login e as conex√µes concluidas iremos para o painel inicial ao qual conseguimos ver os dados do utilizador logado e se conseguiu efetuar ou nao todas as conex√µes. Ir√° ser criado um ficheiro "username".json com a informa√ß√£o obtida pelas conex√µes que foram bem sucessidas. Caso nao consigamos no proximo login aceder quer seja ao email, twitter ou facebook ser√° a este ficheiro que ser√° carregado as informa√ß√µes do ultimo login efetuado em que essas conex√µes foram conseguidas.
 
-Na aplicaÁ„o È possivel enviar email atravÈs da barra de menu como tambÈm efetuar um tweet. Na opÁ„o info È possivel aceder a toda a informaÁ„o e responder a essa mesma informaÁ„o em excepÁ„o ao facebook que apenas È possivel visualizar.
+Na aplica√ß√£o √© possivel enviar email atrav√©s da barra de menu como tamb√©m efetuar um tweet. Na op√ß√£o info √© possivel aceder a toda a informa√ß√£o e responder a essa mesma informa√ß√£o em excep√ß√£o ao facebook que apenas √© possivel visualizar.
 
-AtravÈs da barra de navegaÁ„o È possivel aceder tambÈm ao ficheiro config.xml ao qual e necessario saber a password para aceder, apÛs introduÁ„o da password È possivel clicar show file e visualizar o ficheiro, È possivel efetuar alteraÁıes ao ficheiro clicando edit e guardar as alteraÁıes efetuadas ao clicar save.
+Atrav√©s da barra de navega√ß√£o √© possivel aceder tamb√©m ao ficheiro config.xml ao qual e necessario saber a password para aceder neste caso a password √© "admin", ap√≥s introdu√ß√£o da password √© possivel clicar show file e visualizar o ficheiro, √© possivel efetuar altera√ß√µes ao ficheiro clicando edit e guardar as altera√ß√µes efetuadas ao clicar save.
 
-ApÛs efetuar tudo o que È pretendido È possivel efetuar logout e fechar a aplicaÁ„o ou efetuar login com outra conta.
+Ap√≥s efetuar tudo o que √© pretendido √© possivel efetuar logout e fechar a aplica√ß√£o ou efetuar login com outra conta.
